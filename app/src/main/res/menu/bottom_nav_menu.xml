@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_my_dreams"
+        android:icon="@drawable/ic_dream"
+        android:title="@string/title_my_dreams" />
+
+    <item
+        android:id="@+id/navigation_my_sleep"
+        android:icon="@drawable/ic_sleep"
+        android:title="@string/title_my_sleep" />
+
+    <item
+        android:id="@+id/navigation_square"
+        android:icon="@drawable/ic_square"
+        android:title="@string/title_square" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/title_profile" />
+</menu>

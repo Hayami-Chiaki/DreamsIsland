@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">DreamIsland</string>
+    <string name="title_my_dreams">我的梦</string>
+    <string name="title_my_sleep">我的睡眠</string>
+    <string name="title_square">广场</string>
+    <string name="title_profile">我的</string>
+</resources>
