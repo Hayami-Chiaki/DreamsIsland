@@ -1,5 +1,8 @@
 package com.example.dreamisland;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -29,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        if (!isLoggedIn()) {
+            startActivity(new Intent(this, com.example.dreamisland.ui.auth.LoginActivity.class));
+            finish();
+            return;
+        }
+
         // 初始化数据库
         databaseHelper = new DreamDatabaseHelper(this);
 
@@ -48,6 +57,11 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+    }
+
+    private boolean isLoggedIn() {
+        SharedPreferences sp = getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
+        return sp.getInt("logged_in_user_id", -1) != -1;
     }
 
     private void testDatabaseConnection() {

@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DreamDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "DreamsIsland.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2; // 升级版本号
 
     // 构造函数
     public DreamDatabaseHelper(Context context) {
@@ -23,7 +23,12 @@ public class DreamDatabaseHelper extends SQLiteOpenHelper {
                 "user_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "username TEXT NOT NULL," +
                 "password TEXT NOT NULL," +
-                "avatar BLOB" +
+                "avatar BLOB," +
+                "email TEXT," +
+                "phone TEXT," +
+                "gender TEXT," +
+                "birthday TEXT," +
+                "bio TEXT" +
                 ");");
 
         // 2. 梦境记录表（dreams）
@@ -109,7 +114,19 @@ public class DreamDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if (oldVersion < 2) {
+            // 添加用户信息扩展字段
+            try {
+                db.execSQL("ALTER TABLE users ADD COLUMN email TEXT");
+                db.execSQL("ALTER TABLE users ADD COLUMN phone TEXT");
+                db.execSQL("ALTER TABLE users ADD COLUMN gender TEXT");
+                db.execSQL("ALTER TABLE users ADD COLUMN birthday TEXT");
+                db.execSQL("ALTER TABLE users ADD COLUMN bio TEXT");
+                Log.d("DreamDatabaseHelper", "Database upgraded to version 2: Added user profile fields");
+            } catch (Exception e) {
+                Log.e("DreamDatabaseHelper", "Error upgrading database", e);
+            }
+        }
     }
 
     // 每次打开数据库时确保外键生效（必须保留）
