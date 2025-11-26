@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="#F5F5F5">
+    android:clipToPadding="true"
+    android:paddingTop="?attr/actionBarSize">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +19,8 @@
             android:text="注册"
             android:textStyle="bold"
             android:textSize="22sp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/tertiary_60"/>
 
         <ImageView
             android:id="@+id/avatarImageView"
@@ -40,6 +42,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:hint="用户名"
+            android:textColorHint="@color/white"
+            app:boxBackgroundColor="@color/tertiary_20"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/usernameEditText"
@@ -52,6 +56,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:hint="密码"
+            android:textColorHint="@color/white"
+            app:boxBackgroundColor="@color/tertiary_20"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordEditText"

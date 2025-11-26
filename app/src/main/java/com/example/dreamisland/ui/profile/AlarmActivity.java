@@ -72,7 +72,7 @@ public class AlarmActivity extends AppCompatActivity {
         });
 
         // 时间选择器
-        binding.timePicker.setIs24HourView(true);
+        binding.timePicker.setIs24HourView(false);
         binding.timePicker.setOnTimeChangedListener((view, hourOfDay, minute) -> {
             saveAlarmTime(hourOfDay, minute);
             if (binding.enableAlarmSwitch.isChecked()) {

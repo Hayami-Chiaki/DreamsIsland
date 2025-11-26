@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="12dp">
+    android:padding="12dp"
+    android:background="@color/tertiary_30">
 
     <TextView
         android:id="@+id/title"
@@ -11,7 +12,8 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="16sp"
-        android:text="帖子标题" />
+        android:text="帖子标题"
+        android:textColor="@color/tertiary_60"/>
 
     <TextView
         android:id="@+id/preview"
@@ -19,7 +21,8 @@
         android:layout_height="wrap_content"
         android:maxLines="1"
         android:ellipsize="end"
-        android:text="内容预览" />
+        android:text="内容预览"
+        android:textColor="@color/tertiary_50"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -30,21 +33,24 @@
             android:id="@+id/author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="作者" />
+            android:text="作者"
+            android:textColor="@color/tertiary_40"/>
 
         <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="时间" />
+            android:text="时间"
+            android:textColor="@color/tertiary_40"/>
 
         <TextView
             android:id="@+id/replyCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="0" />
+            android:text="0"
+            android:textColor="@color/tertiary_40"/>
     </LinearLayout>
 
 </LinearLayout>

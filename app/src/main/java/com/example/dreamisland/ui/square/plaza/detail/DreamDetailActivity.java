@@ -19,6 +19,11 @@ public class DreamDetailActivity extends AppCompatActivity {
         binding = ActivityDreamDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("详情");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         int dreamId = getIntent().getIntExtra("dream_id", -1);
         if (dreamId != -1) {
             DreamDatabaseHelper helper = new DreamDatabaseHelper(this);
@@ -33,6 +38,12 @@ public class DreamDetailActivity extends AppCompatActivity {
             c.close();
             db.close();
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
 

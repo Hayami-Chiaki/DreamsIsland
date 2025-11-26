@@ -3,9 +3,13 @@ package com.example.dreamisland.ui.square.discussion.detail;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.graphics.Color;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.dreamisland.R;
 
 import java.util.List;
 
@@ -20,6 +24,8 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         TextView tv = (TextView) LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+        tv.setTextSize(14);
+        tv.setTextColor(ContextCompat.getColor(parent.getContext(), R.color.tertiary_60));
         return new ViewHolder(tv);
     }
 

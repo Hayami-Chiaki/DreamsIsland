@@ -3,49 +3,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/white"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:paddingTop="?attr/actionBarSize"
+    android:fitsSystemWindows="true">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textSize="20sp"
-        android:textColor="@android:color/black" />
+        android:textSize="22sp"
+        android:textColor="@color/tertiary_50"
+        android:layout_marginStart="10dp"/>
 
     <TextView
         android:id="@+id/meta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textColor="#666666" />
+        android:textSize="13sp"
+        android:textColor="@color/tertiary_30"
+        android:layout_marginStart="10dp"/>
 
     <TextView
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textColor="@android:color/black" />
+        android:textSize="16sp"
+        android:textColor="@color/tertiary_60"
+        android:layout_marginStart="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/replies"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="10dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
 
         <EditText
             android:id="@+id/inputReply"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="写下你的回复..." />
+            android:hint="  写下你的回复..."
+            android:textColorHint="@color/tertiary_50"
+            android:background="@color/tertiary_10"
+            android:minHeight="48dp"
+            android:layout_marginRight="10dp"/>
 
         <Button
             android:id="@+id/btnReply"
@@ -53,7 +65,7 @@
             android:layout_height="wrap_content"
             android:text="回复"
             android:textColor="@android:color/white"
-            android:backgroundTint="@color/purple_500" />
+            android:backgroundTint="@color/purple_500"/>
     </LinearLayout>
 
 </LinearLayout>

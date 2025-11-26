@@ -7,6 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.Toast;
+import android.widget.ArrayAdapter;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import androidx.core.content.ContextCompat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -119,6 +124,25 @@ public class EditProfileActivity extends AppCompatActivity {
         binding.bioEditText.setEnabled(true);
         binding.bioEditText.setFocusable(true);
         binding.bioEditText.setFocusableInTouchMode(true);
+
+        String[] options = getResources().getStringArray(R.array.gender_options);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, options) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTextColor(ContextCompat.getColor(EditProfileActivity.this, R.color.tertiary_50));
+                return v;
+            }
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View v = super.getDropDownView(position, convertView, parent);
+                ((TextView) v).setTextColor(ContextCompat.getColor(EditProfileActivity.this, R.color.tertiary_50));
+                ((TextView) v).setBackgroundColor(ContextCompat.getColor(EditProfileActivity.this, R.color.tertiary_30));
+                return v;
+            }
+        };
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.genderSpinner.setAdapter(adapter);
     }
 
     private void showDatePickerDialog() {
@@ -225,7 +249,12 @@ public class EditProfileActivity extends AppCompatActivity {
 
         // 更新用户信息
         currentUser.setUsername(binding.usernameEditText.getText().toString().trim());
-        currentUser.setEmail(binding.emailEditText.getText().toString().trim());
+        String email = binding.emailEditText.getText().toString().trim();
+        if (!android.text.TextUtils.isEmpty(email) && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "邮箱格式不正确", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        currentUser.setEmail(email);
         currentUser.setPhone(binding.phoneEditText.getText().toString().trim());
         currentUser.setBirthday(binding.birthdayEditText.getText().toString().trim());
         currentUser.setBio(binding.bioEditText.getText().toString().trim());

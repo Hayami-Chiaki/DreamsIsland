@@ -4,16 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
     android:fitsSystemWindows="true"
-    android:clipToPadding="false"
+    android:clipToPadding="true"
     tools:context=".ui.profile.AlarmActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:paddingTop="80dp">
+        android:paddingTop="?attr/actionBarSize">
 
         <!-- 闹钟类型切换 -->
         <com.google.android.material.card.MaterialCardView
@@ -29,7 +28,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="16dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:background="@color/tertiary_10">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipSleep"
@@ -37,7 +37,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:text="入睡提醒" />
+                    android:text="入睡提醒"
+                    app:chipBackgroundColor="@color/tertiary_50"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipWake"
@@ -45,7 +46,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:text="起床提醒" />
+                    android:text="起床提醒"
+                    app:chipBackgroundColor="@color/tertiary_50" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -56,14 +58,16 @@
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
-            app:layout_constraintTop_toBottomOf="@id/typeCard">
+            app:layout_constraintTop_toBottomOf="@id/typeCard"
+            android:layout_marginTop="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="16dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@color/tertiary_10">
 
                 <TextView
                     android:layout_width="0dp"
@@ -72,7 +76,7 @@
                     android:text="@string/enable_alarm"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/tertiary_50" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/enableAlarmSwitch"
@@ -95,7 +99,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:background="@color/tertiary_10">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -103,14 +108,16 @@
                     android:text="@string/alarm_time"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/tertiary_50"
                     android:layout_marginBottom="16dp" />
 
                 <TimePicker
                     android:id="@+id/timePicker"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:background="@color/tertiary_20"
+                    android:theme="@style/TimePickerDark" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -128,7 +135,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:background="@color/tertiary_10">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -136,7 +144,7 @@
                     android:text="@string/alarm_repeat"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/tertiary_50"
                     android:layout_marginBottom="16dp" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
@@ -144,6 +152,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/monday"
+                    android:textColor="@color/tertiary_50"
                     android:layout_marginBottom="8dp" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
@@ -151,6 +160,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/tuesday"
+                    android:textColor="@color/tertiary_50"
                     android:layout_marginBottom="8dp" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
@@ -158,6 +168,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/wednesday"
+                    android:textColor="@color/tertiary_50"
                     android:layout_marginBottom="8dp" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
@@ -165,6 +176,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/thursday"
+                    android:textColor="@color/tertiary_50"
                     android:layout_marginBottom="8dp" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
@@ -172,6 +184,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/friday"
+                    android:textColor="@color/tertiary_50"
                     android:layout_marginBottom="8dp" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
@@ -179,12 +192,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/saturday"
+                    android:textColor="@color/tertiary_50"
                     android:layout_marginBottom="8dp" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/sundayCheckBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/tertiary_50"
                     android:text="@string/sunday" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

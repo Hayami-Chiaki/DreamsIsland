@@ -96,7 +96,7 @@ public class DreamDatabaseHelper extends SQLiteOpenHelper {
 
         // 8. 初始化测试数据（移除了消息表相关数据）
         db.execSQL("INSERT OR IGNORE INTO users (username, password) " +
-                "VALUES ('test_user', 'e10adc3949ba59abbe56e057f20f883e');");
+                "VALUES ('test_user', '123456');");
 
         db.execSQL("INSERT OR IGNORE INTO dreams (user_id, title, content, nature, tags, is_public, created_at) " +
                 "VALUES (1, '第一次测试梦境', '这是一条测试用的梦境内容，用于验证数据库功能', '好梦', '[\"测试\",\"好梦\"]', 1, '2024-01-01 10:00');");

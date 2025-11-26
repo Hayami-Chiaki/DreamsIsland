@@ -4,6 +4,7 @@
     <string name="title_my_sleep">我的睡眠</string>
     <string name="title_square">广场</string>
     <string name="title_profile">我的</string>
+    <string name="tab_navigation">页面切换标签</string>
     
     <!-- Profile Fragment -->
     <string name="edit_profile">编辑资料</string>

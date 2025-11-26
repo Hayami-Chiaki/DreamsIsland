@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="#F5F5F5"
+    android:clipToPadding="true"
+    android:paddingTop="?attr/actionBarSize"
     tools:context=".ui.profile.ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="60dp">
+        android:paddingTop="0dp">
 
         <!-- 用户信息区域 -->
         <com.google.android.material.card.MaterialCardView
@@ -28,7 +29,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="24dp"
-                android:gravity="center">
+                android:gravity="center"
+                android:background="@color/tertiary_10">
 
                 <!-- 头像 -->
                 <ImageView
@@ -51,7 +53,7 @@
                     android:text="用户名"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/tertiary_60" />
 
                 <!-- 编辑资料按钮 -->
                 <com.google.android.material.button.MaterialButton
@@ -93,14 +95,15 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="16dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@color/tertiary_10">
 
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@android:drawable/ic_lock_idle_alarm"
                         android:contentDescription="@string/alarm_settings"
-                        android:tint="@color/purple_500" />
+                        app:tint="@color/purple_500" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -115,7 +118,7 @@
                             android:text="@string/alarm_settings"
                             android:textSize="16sp"
                             android:textStyle="bold"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/tertiary_60" />
 
                         <TextView
                             android:id="@+id/alarmStatusTextView"
@@ -132,7 +135,7 @@
                         android:layout_height="24dp"
                         android:src="@android:drawable/ic_menu_more"
                         android:contentDescription="@string/arrow"
-                        android:tint="@color/gray" />
+                        app:tint="@color/gray" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -154,14 +157,15 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="16dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:background="@color/tertiary_10">
 
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@android:drawable/ic_menu_preferences"
                         android:contentDescription="@string/app_settings"
-                        android:tint="@color/purple_500" />
+                        app:tint="@color/purple_500" />
 
                     <TextView
                         android:layout_width="0dp"
@@ -171,14 +175,14 @@
                         android:text="@string/app_settings"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/tertiary_60" />
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@android:drawable/ic_menu_more"
                         android:contentDescription="@string/arrow"
-                        android:tint="@color/gray" />
+                        app:tint="@color/gray" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

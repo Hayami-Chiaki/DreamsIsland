@@ -34,6 +34,11 @@ public class PostDetailActivity extends AppCompatActivity {
         binding = ActivityPostDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("详情");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         postId = getIntent().getIntExtra("post_id", -1);
 
         adapter = new RepliesAdapter(replies);
@@ -44,6 +49,12 @@ public class PostDetailActivity extends AppCompatActivity {
         loadReplies();
 
         binding.btnReply.setOnClickListener(v -> doReply());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void loadPost() {

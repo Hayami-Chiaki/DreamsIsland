@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@android:color/white">
+    android:paddingTop="?attr/actionBarSize"
+    android:fitsSystemWindows="true"
+    android:clipToPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,29 +17,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="20sp"
-            android:textColor="@android:color/black" />
+            android:textSize="30sp"
+            android:textColor="@color/tertiary_50"
+            android:layout_marginStart="10dp"/>
 
         <TextView
             android:id="@+id/meta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="#666666" />
+            android:textSize="20sp"
+            android:textColor="@color/tertiary_60"
+            android:layout_marginStart="10dp"/>
 
         <TextView
             android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="#666666" />
+            android:textSize="15sp"
+            android:textColor="@color/tertiary_30"
+            android:layout_marginStart="10dp"/>
 
         <TextView
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textColor="@android:color/black" />
+            android:textSize="20sp"
+            android:textColor="@color/tertiary_60"
+            android:layout_marginStart="10dp"/>
     </LinearLayout>
 
 </ScrollView>

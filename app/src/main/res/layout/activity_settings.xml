@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:fitsSystemWindows="true"
+    android:paddingTop="?attr/actionBarSize"
+    android:clipToPadding="true"
     tools:context=".ui.profile.SettingsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:paddingTop="60dp">
+        android:padding="16dp">
 
         <!-- 通知设置 -->
         <com.google.android.material.card.MaterialCardView
@@ -27,7 +28,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="16dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@color/tertiary_10">
 
                 <TextView
                     android:layout_width="0dp"
@@ -35,7 +37,7 @@
                     android:layout_weight="1"
                     android:text="@string/enable_notifications"
                     android:textSize="16sp"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/tertiary_60" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/enableNotificationsSwitch"
@@ -57,7 +59,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="16dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@color/tertiary_10">
 
                 <TextView
                     android:layout_width="0dp"
@@ -65,7 +68,7 @@
                     android:layout_weight="1"
                     android:text="@string/dark_mode"
                     android:textSize="16sp"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/tertiary_60" />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/darkModeSwitch"
@@ -86,7 +89,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:padding="8dp"
+                android:background="@color/tertiary_10">
 
                 <!-- 清除缓存 -->
                 <LinearLayout
@@ -106,13 +110,13 @@
                         android:layout_weight="1"
                         android:text="@string/clear_cache"
                         android:textSize="16sp"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/tertiary_60" />
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@android:drawable/ic_menu_more"
-                        android:tint="@color/gray" />
+                        app:tint="@color/gray" />
                 </LinearLayout>
 
                 <View
@@ -140,13 +144,13 @@
                         android:layout_weight="1"
                         android:text="@string/about"
                         android:textSize="16sp"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/tertiary_60" />
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@android:drawable/ic_menu_more"
-                        android:tint="@color/gray" />
+                        app:tint="@color/gray" />
                 </LinearLayout>
 
                 <View
@@ -174,13 +178,13 @@
                         android:layout_weight="1"
                         android:text="@string/privacy_policy"
                         android:textSize="16sp"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/tertiary_60" />
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@android:drawable/ic_menu_more"
-                        android:tint="@color/gray" />
+                        app:tint="@color/gray" />
                 </LinearLayout>
 
                 <View
@@ -208,13 +212,13 @@
                         android:layout_weight="1"
                         android:text="@string/terms_of_service"
                         android:textSize="16sp"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/tertiary_60" />
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@android:drawable/ic_menu_more"
-                        android:tint="@color/gray" />
+                        app:tint="@color/gray" />
                 </LinearLayout>
 
                 <View
@@ -248,7 +252,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@android:drawable/ic_menu_more"
-                        android:tint="@color/gray" />
+                        app:tint="@color/gray" />
                 </LinearLayout>
 
             </LinearLayout>

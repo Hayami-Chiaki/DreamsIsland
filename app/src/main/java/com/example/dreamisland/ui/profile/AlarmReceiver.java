@@ -3,6 +3,7 @@ package com.example.dreamisland.ui.profile;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -32,9 +33,23 @@ public class AlarmReceiver extends BroadcastReceiver {
                     intent,
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            SharedPreferences sp = context.getSharedPreferences("AlarmPrefs", Context.MODE_PRIVATE);
+            boolean enabled = sp.getBoolean(type + "_enabled", false);
+            if (!enabled) return;
+            int hour = sp.getInt(type + "_hour", 7);
+            int minute = sp.getInt(type + "_minute", 0);
 
             Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.DAY_OF_YEAR, 7);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            cal.set(Calendar.HOUR_OF_DAY, hour);
+            cal.set(Calendar.MINUTE, minute);
+            int currentDow = cal.get(Calendar.DAY_OF_WEEK);
+            int delta = (weekday - currentDow + 7) % 7;
+            if (delta == 0 && cal.getTimeInMillis() <= System.currentTimeMillis()) {
+                delta = 7;
+            }
+            cal.add(Calendar.DAY_OF_YEAR, delta);
             am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pi);
         }
     }
