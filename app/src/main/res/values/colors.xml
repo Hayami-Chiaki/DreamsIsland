@@ -8,5 +8,17 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#FF808080</color>
-
+    
+    <!-- 自定义颜色 -->
+    <color name="green_light">#E8F5E9</color>
+    <color name="green_dark">#2E7D32</color>
+    <color name="red_light">#FFEBEE</color>
+    <color name="red_dark">#C62828</color>
+    <color name="blue_light">#E3F2FD</color>
+    <color name="blue_dark">#1976D2</color>
+    <color name="gray_light">#F5F5F5</color>
+    <color name="gray_medium">#9E9E9E</color>
+    <color name="gray_dark">#616161</color>
+    <color name="primary_color">#5B247F</color>
+    <color name="secondary_color">#B994FE</color>
 </resources>

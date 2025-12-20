@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@drawable/item_dream_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/tv_dream_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="梦境标题"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:ellipsize="end"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/tv_dream_nature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="好梦"
+            android:textSize="12sp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:background="@color/green_light"
+            android:textColor="@color/green_dark"
+            android:layout_marginLeft="8dp"
+            android:gravity="center"
+            android:maxLines="1" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_dream_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="梦境内容将在这里显示..."
+        android:textSize="14sp"
+        android:textColor="@color/gray_dark"
+        android:maxLines="3"
+        android:ellipsize="end"
+        android:layout_marginBottom="8dp" />
+    
+    <!-- 标签显示区域 -->
+    <LinearLayout
+        android:id="@+id/layout_dream_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone">
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_dream_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2024-01-01 10:00"
+        android:textSize="12sp"
+        android:textColor="@color/gray_medium"
+        android:gravity="end" />
+</LinearLayout>

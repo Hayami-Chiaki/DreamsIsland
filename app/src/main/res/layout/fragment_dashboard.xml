@@ -1,22 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.mySleep.MySleepFragment">
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <TextView
-        android:id="@+id/text_dashboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:text="我的睡眠"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp" />
+
+    <!-- 健康提示 -->
+    <LinearLayout
+        android:id="@+id/layout_health_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#fff3cd"
+        android:padding="12dp"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_health_tips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#856404"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <!-- 功能按钮区域 -->
+    <Button
+        android:id="@+id/btn_heatmap"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="查看热力图"
+        android:layout_marginBottom="10dp" />
+
+    <Button
+        android:id="@+id/btn_record_body_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="记录身体状态"
+        android:layout_marginBottom="20dp" />
+
+    <!-- 身体状态记录标题 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="最近身体状态记录"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp" />
+
+    <!-- 身体状态列表 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_body_states"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- 空状态 -->
+    <LinearLayout
+        android:id="@+id/layout_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂无身体状态记录"
+            android:textSize="16sp"
+            android:textColor="#666" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="点击上方按钮记录您的身体状态"
+            android:textSize="12sp"
+            android:textColor="#999"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
