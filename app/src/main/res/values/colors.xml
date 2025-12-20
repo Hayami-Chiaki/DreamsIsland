@@ -9,4 +9,15 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#FF808080</color>
 
+
+    <!-- 身体状态颜色 -->
+    <color name="color_tired">#FF6B6B</color>  <!-- 红色 - 疲惫 -->
+    <color name="color_general">#FFD93D</color> <!-- 黄色 - 一般 -->
+    <color name="color_energetic">#51CF66</color><!-- 绿色 - 精神 -->
+
+
+
+    <color name="gray_light">#4B4949</color>
+
+
 </resources>

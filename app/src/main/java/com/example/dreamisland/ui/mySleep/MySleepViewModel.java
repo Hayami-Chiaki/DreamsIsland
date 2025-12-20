@@ -10,7 +10,7 @@ public class MySleepViewModel extends ViewModel {
 
     public MySleepViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+      //  mText.setValue("This is dashboard fragment");
     }
 
     public LiveData<String> getText() {
