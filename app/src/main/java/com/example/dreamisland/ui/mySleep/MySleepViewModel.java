@@ -3,8 +3,10 @@ package com.example.dreamisland.ui.mySleep;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.List;
 
 public class MySleepViewModel extends ViewModel {
+
 
     private final MutableLiveData<String> mText;
 
@@ -16,4 +18,5 @@ public class MySleepViewModel extends ViewModel {
     public LiveData<String> getText() {
         return mText;
     }
+
 }

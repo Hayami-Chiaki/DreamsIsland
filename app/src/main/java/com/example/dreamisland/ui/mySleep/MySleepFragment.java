@@ -1,5 +1,6 @@
 package com.example.dreamisland.ui.mySleep;
 
+
 import static android.content.ContentValues.TAG;
 
 import android.os.Bundle;
@@ -276,9 +277,15 @@ public class MySleepFragment extends Fragment {
             for (BodyState state : monthlyStates) {
                 if (state != null && state.getState() != null) {
                     switch (state.getState()) {
-                        case "疲惫": tiredCount++; break;
-                        case "精神": energeticCount++; break;
-                        case "一般": generalCount++; break;
+                        case "疲惫":
+                            tiredCount++;
+                            break;
+                        case "精神":
+                            energeticCount++;
+                            break;
+                        case "一般":
+                            generalCount++;
+                            break;
                     }
                 }
             }
