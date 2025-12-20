@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,9 +38,7 @@ import com.example.dreamisland.adapter.DreamAdapter;
 import com.example.dreamisland.model.Dream;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class MyDreamsFragment extends Fragment implements DreamAdapter.OnDreamClickListener {
@@ -151,10 +155,50 @@ public class MyDreamsFragment extends Fragment implements DreamAdapter.OnDreamCl
         Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
         Button btnSave = dialogView.findViewById(R.id.btn_save);
         
+        // 标签相关组件
+        EditText etTagInput = dialogView.findViewById(R.id.et_tag_input);
+        Button btnAddTag = dialogView.findViewById(R.id.btn_add_tag);
+        LinearLayout layoutTagsContainer = dialogView.findViewById(R.id.layout_tags_container);
+        LinearLayout layoutTags = dialogView.findViewById(R.id.layout_tags);
+        
+        // 标签列表
+        List<String> tagsList = new ArrayList<>();
+        
         AlertDialog dialog = builder.create();
         
         // 取消按钮点击事件
         btnCancel.setOnClickListener(v -> dialog.dismiss());
+        
+        // 添加标签按钮点击事件
+        btnAddTag.setOnClickListener(v -> {
+            String tag = etTagInput.getText().toString().trim();
+            
+            // 验证标签
+            if (TextUtils.isEmpty(tag)) {
+                Toast.makeText(context, "请输入标签内容", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            if (tag.length() > 10) {
+                Toast.makeText(context, "标签不能超过10个字符", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            if (tagsList.contains(tag)) {
+                Toast.makeText(context, "标签已存在", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            if (tagsList.size() >= 5) {
+                Toast.makeText(context, "最多只能添加5个标签", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            // 添加标签
+            tagsList.add(tag);
+            addTagView(layoutTags, tag, tagsList, layoutTagsContainer);
+            etTagInput.setText("");
+        });
         
         // 保存按钮点击事件
         btnSave.setOnClickListener(v -> {
@@ -189,7 +233,7 @@ public class MyDreamsFragment extends Fragment implements DreamAdapter.OnDreamCl
             dream.setTitle(title);
             dream.setContent(content);
             dream.setNature(nature);
-            dream.setTags("[]"); // 默认空标签
+            dream.setTags(gson.toJson(tagsList)); // 将标签列表转换为JSON字符串
             dream.setPublic(cbMakePublic.isChecked());
             dream.setCreatedAt(currentTime);
             
@@ -204,6 +248,61 @@ public class MyDreamsFragment extends Fragment implements DreamAdapter.OnDreamCl
         
         dialog.show();
     }
+    
+    /**
+     * 添加标签视图
+     */
+    private void addTagView(LinearLayout parent, String tag, List<String> tagsList, LinearLayout tagsContainer) {
+        // 创建标签容器
+        LinearLayout tagLayout = new LinearLayout(context);
+        tagLayout.setOrientation(LinearLayout.HORIZONTAL);
+        tagLayout.setPadding(8, 4, 8, 4);
+        tagLayout.setBackgroundColor(context.getResources().getColor(R.color.blue_light));
+        tagLayout.setGravity(Gravity.CENTER_VERTICAL);
+        
+        // 创建标签文本
+        TextView tagText = new TextView(context);
+        tagText.setText(tag);
+        tagText.setTextColor(context.getResources().getColor(R.color.blue_dark));
+        tagText.setTextSize(12);
+        tagText.setPadding(0, 0, 8, 0);
+        
+        // 创建删除按钮
+        Button deleteBtn = new Button(context);
+        deleteBtn.setText("×");
+        deleteBtn.setTextColor(context.getResources().getColor(R.color.blue_dark));
+        deleteBtn.setTextSize(14);
+        deleteBtn.setPadding(4, 0, 4, 0);
+        deleteBtn.setBackground(null);
+        deleteBtn.setWidth(20);
+        deleteBtn.setHeight(20);
+        
+        // 删除按钮点击事件
+        deleteBtn.setOnClickListener(v -> {
+            tagsList.remove(tag);
+            parent.removeView(tagLayout);
+            
+            // 如果没有标签，隐藏标签容器
+            if (tagsList.isEmpty()) {
+                tagsContainer.setVisibility(View.GONE);
+            }
+        });
+        
+        // 添加到标签布局
+        tagLayout.addView(tagText);
+        tagLayout.addView(deleteBtn);
+        
+        // 添加到父容器
+        parent.addView(tagLayout);
+        
+        // 显示标签容器
+        tagsContainer.setVisibility(View.VISIBLE);
+    }
+    
+    /**
+     * Gson实例，用于JSON转换
+     */
+    private Gson gson = new Gson();
 
     // 显示梦境详情对话框
     private void showDreamDetailDialog(Dream dream) {
