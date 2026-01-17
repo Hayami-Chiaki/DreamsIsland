@@ -17,4 +17,24 @@
     <color name="tertiary_40">@color/material_dynamic_tertiary40</color>
     <color name="tertiary_50">@color/material_dynamic_tertiary50</color>
     <color name="tertiary_60">@color/material_dynamic_tertiary60</color>
+
+    <!-- 身体状态颜色 -->
+    <color name="color_tired">#FF6B6B</color>  <!-- 红色 - 疲惫 -->
+    <color name="color_general">#FFD93D</color> <!-- 黄色 - 一般 -->
+    <color name="color_energetic">#51CF66</color><!-- 绿色 - 精神 -->
+
+
+
+    <!-- 自定义颜色 -->
+    <color name="green_light">#E8F5E9</color>
+    <color name="green_dark">#2E7D32</color>
+    <color name="red_light">#FFEBEE</color>
+    <color name="red_dark">#C62828</color>
+    <color name="blue_light">#E3F2FD</color>
+    <color name="blue_dark">#1976D2</color>
+    <color name="gray_light">#F5F5F5</color>
+    <color name="gray_medium">#9E9E9E</color>
+    <color name="gray_dark">#616161</color>
+    <color name="primary_color">#5B247F</color>
+    <color name="secondary_color">#B994FE</color>
 </resources>

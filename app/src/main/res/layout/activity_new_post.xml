@@ -4,9 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:paddingTop="?attr/actionBarSize"
+    android:paddingTop="0dp"
     android:fitsSystemWindows="true">
-    <!-- 增加顶部内边距，确保标题输入框在标题栏下方完全可见 -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/tertiary_60"
+        android:title="发布新帖子"
+        android:titleTextColor="@color/tertiary_10"/>
 
     <EditText
         android:id="@+id/inputTitle"

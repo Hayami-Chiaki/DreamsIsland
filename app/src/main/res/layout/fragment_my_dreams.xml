@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:paddingTop="?attr/actionBarSize">
+
+    <!-- 功能按钮区域 -->
+    <Button
+        android:id="@+id/btn_record_dream"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="记录梦境"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="72dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#f0f0f0"
+        android:padding="12dp"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:id="@+id/btn_view_match_dream"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="查看匹配对象的梦境" />
+
+        <TextView
+            android:id="@+id/tv_match_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="暂无匹配对象"
+            android:textSize="12sp"
+            android:textColor="#666"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+
+    <!-- 梦境列表标题 -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="最近梦境记录"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp" />
+
+    <!-- 梦境列表 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_dreams"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- 空状态 -->
+    <LinearLayout
+        android:id="@+id/layout_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂无梦境记录"
+            android:textSize="16sp"
+            android:textColor="#666" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="点击上方按钮记录您的第一个梦境"
+            android:textSize="12sp"
+            android:textColor="#999"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

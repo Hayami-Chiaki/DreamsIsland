@@ -65,6 +65,11 @@
         <activity android:name=".ui.square.plaza.detail.DreamDetailActivity" />
         <activity android:name=".ui.square.discussion.detail.PostDetailActivity" />
         <activity android:name=".ui.square.discussion.NewPostActivity" />
+        <activity
+            android:name=".ui.myDreams.MyDreamDetailActivity"
+            android:exported="false"
+            android:label="梦境详情"
+            android:parentActivityName=".MainActivity" />
             
         <receiver
             android:name=".ui.profile.AlarmReceiver"

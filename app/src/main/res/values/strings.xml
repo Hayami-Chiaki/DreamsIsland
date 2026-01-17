@@ -61,4 +61,14 @@
     <string name="clear_cache">清除缓存</string>
     <string name="logout">退出登录</string>
     <string name="cache_cleared">缓存已清除</string>
+
+    <string name="history_log">历史记录</string>
+    <string name="body_status">身体状态记录</string>
+    <string name="tired">疲惫</string>
+    <string name="normal">一般</string>
+    <string name="mental">精神</string>
+    <string name="month_status_date">本月状态日历</string>
+    <string name="select_all">查看统计</string>
+    <string name="_1">1</string>
+    <string name="now_month_status">本月状态分布</string>
 </resources>

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:paddingTop="?attr/actionBarSize"
+    android:paddingTop="0dp"
     android:fitsSystemWindows="true"
     android:clipToPadding="true">
 
@@ -11,6 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/tertiary_60"
+            android:title="详情"
+            android:titleTextColor="@color/tertiary_10"/>
 
         <TextView
             android:id="@+id/title"

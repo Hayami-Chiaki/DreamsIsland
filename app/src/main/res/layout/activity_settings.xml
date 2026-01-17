@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:paddingTop="?attr/actionBarSize"
+    android:paddingTop="0dp"
     android:clipToPadding="true"
     tools:context=".ui.profile.SettingsActivity">
 
@@ -15,11 +15,20 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/tertiary_60"
+            android:title="@string/settings_title"
+            android:titleTextColor="@color/tertiary_10"/>
+
         <!-- 通知设置 -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp">
 
