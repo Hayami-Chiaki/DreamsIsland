@@ -18,6 +18,7 @@ public class DreamDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityDreamDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.topBar);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("详情");

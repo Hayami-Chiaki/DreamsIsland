@@ -34,14 +34,14 @@ public class SquareRepository {
         Cursor c = db.rawQuery(sql, new String[]{String.valueOf(limit), String.valueOf(offset)});
         while (c.moveToNext()) {
             Dream d = new Dream();
-            d.dreamId = c.getInt(0);
-            d.title = c.getString(1);
+            d.setDreamId(c.getInt(0));
+            d.setTitle(c.getString(1));
             String content = c.getString(2);
-            d.previewContent = content == null ? "" : content;
-            d.nature = c.getString(3);
-            d.tags = c.getString(4);
-            d.createdAt = c.getString(5);
-            d.username = c.getString(6);
+            d.setPreviewContent(content == null ? "" : content);
+            d.setNature(c.getString(3));
+            d.setTags(c.getString(4));
+            d.setCreatedAt(c.getString(5));
+            d.setUsername(c.getString(6));
             list.add(d);
         }
         c.close();

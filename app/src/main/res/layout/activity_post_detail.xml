@@ -4,69 +4,103 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:paddingTop="?attr/actionBarSize"
-    android:fitsSystemWindows="true">
+    android:paddingTop="0dp"
+    android:fitsSystemWindows="true"
+    android:background="@color/purple_dark">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="22sp"
-        android:textColor="@color/tertiary_50"
-        android:layout_marginStart="10dp"/>
-
-    <TextView
-        android:id="@+id/meta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="13sp"
-        android:textColor="@color/tertiary_30"
-        android:layout_marginStart="10dp"/>
-
-    <TextView
-        android:id="@+id/content"
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="16sp"
-        android:textColor="@color/tertiary_60"
-        android:layout_marginStart="10dp"/>
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/tertiary_60"
+        android:title="详情"
+        android:titleTextColor="@color/tertiary_10"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/replies"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="10dp"/>
-
+    <!-- 表情标题栏 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
+        android:orientation="vertical"
+        android:background="@color/purple_medium"
+        android:padding="16dp">
 
-        <EditText
-            android:id="@+id/inputReply"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="  写下你的回复..."
-            android:textColorHint="@color/tertiary_50"
-            android:background="@color/tertiary_10"
-            android:minHeight="48dp"
-            android:layout_marginRight="10dp"/>
-
-        <Button
-            android:id="@+id/btnReply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="回复"
+            android:textStyle="bold"
+            android:textSize="24sp"
             android:textColor="@android:color/white"
-            android:backgroundTint="@color/purple_500"/>
-    </LinearLayout>
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/meta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/light_gray"/>
+        </LinearLayout>
+
+        <!-- 帖子内容区域 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/purple_medium"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+
+        <!-- 评论列表区域 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:background="@color/purple_medium"
+            android:padding="16dp"
+            android:layout_marginTop="8dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/replies"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+        <!-- 输入框区域 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="10dp">
+
+            <EditText
+                android:id="@+id/inputReply"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="  写下你的回复..."
+                android:textColorHint="@color/light_gray"
+                android:background="@color/purple_dark"
+                android:textColor="@android:color/white"
+                android:minHeight="48dp"
+                android:layout_marginRight="10dp"/>
+
+            <Button
+                android:id="@+id/btnReply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="回复"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/purple_light"/>
+        </LinearLayout>
 
 </LinearLayout>
 

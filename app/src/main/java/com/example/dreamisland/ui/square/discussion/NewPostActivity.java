@@ -24,21 +24,19 @@ public class NewPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityNewPostBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.topBar);
         
-        // 设置标题
-        setTitle("发布新帖子");
-        
-        // 设置返回按钮
         if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("发布新帖子");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         binding.btnPublish.setOnClickListener(v -> publish());
     }
-    
+
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        finish();
         return true;
     }
 

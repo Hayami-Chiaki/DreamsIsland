@@ -40,6 +40,7 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.topBar);
 
         // 初始化日期格式化器
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());

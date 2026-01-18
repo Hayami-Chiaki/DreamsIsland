@@ -49,11 +49,22 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.topBar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("注册");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         databaseHelper = new DreamDatabaseHelper(this);
 
         binding.pickAvatarButton.setOnClickListener(v -> pickAvatar());
         binding.registerButton.setOnClickListener(v -> doRegister());
+    }
+    
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     private void pickAvatar() {

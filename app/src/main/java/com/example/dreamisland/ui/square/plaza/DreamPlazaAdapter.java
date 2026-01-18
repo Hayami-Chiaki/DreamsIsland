@@ -34,16 +34,16 @@ public class DreamPlazaAdapter extends RecyclerView.Adapter<DreamPlazaAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Dream d = data.get(position);
-        holder.binding.username.setText(d.username);
-        holder.binding.title.setText(d.title);
-        holder.binding.preview.setText(d.previewContent);
-        holder.binding.nature.setText(d.nature);
-        holder.binding.tags.setText(d.tags);
-        holder.binding.time.setText(d.createdAt);
+        holder.binding.username.setText(d.getUsername());
+        holder.binding.title.setText(d.getTitle());
+        holder.binding.preview.setText(d.getPreviewContent());
+        holder.binding.nature.setText(d.getNature());
+        holder.binding.tags.setText(d.getTags());
+        holder.binding.time.setText(d.getCreatedAt());
         holder.itemView.setOnClickListener(v -> {
             Context ctx = v.getContext();
             Intent i = new Intent(ctx, DreamDetailActivity.class);
-            i.putExtra("dream_id", d.dreamId);
+            i.putExtra("dream_id", d.getDreamId());
             ctx.startActivity(i);
         });
     }

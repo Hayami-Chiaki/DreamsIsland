@@ -25,13 +25,24 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        databaseHelper = new DreamDatabaseHelper(this);
+        setSupportActionBar(binding.topBar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("登录");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         binding.loginButton.setOnClickListener(v -> doLogin());
         binding.registerText.setOnClickListener(v -> {
             startActivity(new Intent(this, RegisterActivity.class));
         });
+
+        databaseHelper = new DreamDatabaseHelper(this);
+    }
+    
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     private void doLogin() {

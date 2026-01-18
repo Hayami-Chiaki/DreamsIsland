@@ -11,6 +11,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.dreamisland.R;
 import com.example.dreamisland.databinding.ActivityAlarmBinding;
@@ -28,6 +29,7 @@ public class AlarmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAlarmBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.topBar);
 
         // 设置ActionBar
         if (getSupportActionBar() != null) {
@@ -49,6 +51,7 @@ public class AlarmActivity extends AppCompatActivity {
                 currentType = "sleep";
                 binding.chipWake.setChecked(false);
                 loadAlarmSettings();
+                updateChipTextColors();
             }
         });
         binding.chipWake.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -56,6 +59,7 @@ public class AlarmActivity extends AppCompatActivity {
                 currentType = "wake";
                 binding.chipSleep.setChecked(false);
                 loadAlarmSettings();
+                updateChipTextColors();
             }
         });
 
@@ -82,6 +86,7 @@ public class AlarmActivity extends AppCompatActivity {
 
         // 重复设置
         setupRepeatCheckboxes();
+        updateChipTextColors();
     }
 
     private void setupRepeatCheckboxes() {
@@ -140,6 +145,13 @@ public class AlarmActivity extends AppCompatActivity {
         editor.putBoolean(currentType + "_repeat_" + java.util.Calendar.SATURDAY, binding.saturdayCheckBox.isChecked());
         editor.putBoolean(currentType + "_repeat_" + java.util.Calendar.SUNDAY, binding.sundayCheckBox.isChecked());
         editor.apply();
+    }
+
+    private void updateChipTextColors() {
+        int white = ContextCompat.getColor(this, R.color.white);
+        int black = ContextCompat.getColor(this, R.color.black);
+        binding.chipSleep.setTextColor(binding.chipSleep.isChecked() ? white : black);
+        binding.chipWake.setTextColor(binding.chipWake.isChecked() ? white : black);
     }
 
     private void setAlarm() {
