@@ -97,7 +97,7 @@ public class MyDreamsViewModel extends AndroidViewModel {
 
     // 加载用户的梦境列表（默认加载ID为1的用户）
     public void loadUserDreams(int userId) {
-        isLoading.setValue(true);
+        isLoading.postValue(true);
         new Thread(() -> {
             SQLiteDatabase db = null;
             Cursor cursor = null;

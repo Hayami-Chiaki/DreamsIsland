@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -83,8 +84,36 @@ public class MatchedDreamsActivity extends AppCompatActivity implements DreamAda
             Cursor cursor = null;
             try {
                 db = dbHelper.getReadableDatabase();
+                
+                // 调试：查看数据库中所有用户
+                Cursor usersCursor = db.rawQuery("SELECT user_id, username FROM users", null);
+                Log.d("MatchedDreamsActivity", "所有用户:");
+                if (usersCursor != null && usersCursor.moveToFirst()) {
+                    do {
+                        int userId = usersCursor.getInt(usersCursor.getColumnIndexOrThrow("user_id"));
+                        String username = usersCursor.getString(usersCursor.getColumnIndexOrThrow("username"));
+                        Log.d("MatchedDreamsActivity", "  user_id: " + userId + ", username: " + username);
+                    } while (usersCursor.moveToNext());
+                    usersCursor.close();
+                }
+                
+                // 调试：查看数据库中所有梦境记录
+                Cursor allDreamsCursor = db.rawQuery("SELECT dream_id, user_id, title FROM dreams", null);
+                Log.d("MatchedDreamsActivity", "所有梦境:");
+                if (allDreamsCursor != null && allDreamsCursor.moveToFirst()) {
+                    do {
+                        int dreamId = allDreamsCursor.getInt(allDreamsCursor.getColumnIndexOrThrow("dream_id"));
+                        int userId = allDreamsCursor.getInt(allDreamsCursor.getColumnIndexOrThrow("user_id"));
+                        String title = allDreamsCursor.getString(allDreamsCursor.getColumnIndexOrThrow("title"));
+                        Log.d("MatchedDreamsActivity", "  dream_id: " + dreamId + ", user_id: " + userId + ", title: " + title);
+                    } while (allDreamsCursor.moveToNext());
+                    allDreamsCursor.close();
+                }
+                
+                // 查询匹配用户的梦境记录
                 String query = "SELECT dream_id, user_id, title, content, nature, tags, is_public, is_favorite, created_at " +
                         "FROM dreams WHERE user_id = ? ORDER BY created_at DESC";
+                Log.d("MatchedDreamsActivity", "查询用户 " + matchedUserId + " 的梦境");
                 cursor = db.rawQuery(query, new String[]{String.valueOf(matchedUserId)});
 
                 List<Dream> dreams = new ArrayList<>();
@@ -102,7 +131,10 @@ public class MatchedDreamsActivity extends AppCompatActivity implements DreamAda
                                 cursor.getString(cursor.getColumnIndexOrThrow("created_at"))
                         );
                         dreams.add(dream);
+                        Log.d("MatchedDreamsActivity", "  找到梦境: " + dream.getTitle());
                     } while (cursor.moveToNext());
+                } else {
+                    Log.d("MatchedDreamsActivity", "  没有找到该用户的梦境记录");
                 }
 
                 // 更新UI
@@ -111,7 +143,7 @@ public class MatchedDreamsActivity extends AppCompatActivity implements DreamAda
                     updateUI();
                 });
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e("MatchedDreamsActivity", "加载梦境失败", e);
                 runOnUiThread(() -> {
                     updateEmptyState();
                 });

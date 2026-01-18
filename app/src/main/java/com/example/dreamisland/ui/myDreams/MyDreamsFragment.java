@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -65,7 +66,7 @@ public class MyDreamsFragment extends Fragment implements DreamAdapter.OnDreamCl
     private TextView tvMatchHint;
     private LinearLayout layoutEmpty;
     private Context context;
-    private int currentUserId = 1; // 默认用户ID
+    private int currentUserId; // 登录用户ID
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -89,6 +90,10 @@ public class MyDreamsFragment extends Fragment implements DreamAdapter.OnDreamCl
 
         // 设置按钮点击事件
         setupButtonListeners();
+
+        // 从SharedPreferences获取当前登录用户ID
+        SharedPreferences sp = requireActivity().getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
+        currentUserId = sp.getInt("logged_in_user_id", 1); // 默认用户ID为1
 
         // 加载梦境列表
         myDreamsViewModel.loadUserDreams(currentUserId);
@@ -214,7 +219,6 @@ public class MyDreamsFragment extends Fragment implements DreamAdapter.OnDreamCl
     public void onResume() {
         super.onResume();
         // 每次返回该界面时重新加载数据，确保显示最新的梦境列表
-        int currentUserId = 1; // 默认用户ID
         myDreamsViewModel.loadUserDreams(currentUserId);
     }
 
