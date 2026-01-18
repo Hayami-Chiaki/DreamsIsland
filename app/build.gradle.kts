@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
@@ -47,6 +48,8 @@ dependencies {
     implementation(libs.room.common.jvm)
 
     implementation(libs.gson)
+    implementation(libs.mpandroidchart)
+    implementation(libs.viewpager2)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

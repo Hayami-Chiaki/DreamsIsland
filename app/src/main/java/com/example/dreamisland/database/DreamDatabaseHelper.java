@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class DreamDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "DreamsIsland.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4; // 升级版本号，添加聊天功能
 
     // 构造函数
     public DreamDatabaseHelper(Context context) {
@@ -23,7 +23,12 @@ public class DreamDatabaseHelper extends SQLiteOpenHelper {
                 "user_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "username TEXT NOT NULL," +
                 "password TEXT NOT NULL," +
-                "avatar BLOB" +
+                "avatar BLOB," +
+                "email TEXT," +
+                "phone TEXT," +
+                "gender TEXT," +
+                "birthday TEXT," +
+                "bio TEXT" +
                 ");");
 
         // 2. 梦境记录表（dreams）
@@ -35,6 +40,7 @@ public class DreamDatabaseHelper extends SQLiteOpenHelper {
                 "nature TEXT NOT NULL CHECK (nature IN ('好梦', '噩梦', '其他'))," +
                 "tags TEXT," +
                 "is_public INTEGER DEFAULT 0 CHECK (is_public IN (0, 1))," +
+                "is_favorite INTEGER DEFAULT 0 CHECK (is_favorite IN (0, 1))," +
                 "created_at TEXT NOT NULL," +
                 "FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE" +
                 ");");
@@ -82,6 +88,19 @@ public class DreamDatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE" +
                 ");");
 
+        // 7. 聊天记录表（chat_messages）
+        db.execSQL("CREATE TABLE IF NOT EXISTS chat_messages (" +
+                "message_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "match_id INTEGER NOT NULL," +
+                "sender_id INTEGER NOT NULL," +
+                "receiver_id INTEGER NOT NULL," +
+                "content TEXT NOT NULL," +
+                "created_at TEXT NOT NULL," +
+                "FOREIGN KEY (match_id) REFERENCES matches (match_id) ON DELETE CASCADE," +
+                "FOREIGN KEY (sender_id) REFERENCES users (user_id) ON DELETE CASCADE," +
+                "FOREIGN KEY (receiver_id) REFERENCES users (user_id) ON DELETE CASCADE" +
+                ");");
+
         // 7. 索引（移除了消息表相关索引）
         db.execSQL("CREATE INDEX IF NOT EXISTS idx_dreams_user_created ON dreams (user_id, created_at DESC);");
         db.execSQL("CREATE INDEX IF NOT EXISTS idx_dreams_public_created ON dreams (is_public, created_at DESC);");
@@ -91,7 +110,7 @@ public class DreamDatabaseHelper extends SQLiteOpenHelper {
 
         // 8. 初始化测试数据（移除了消息表相关数据）
         db.execSQL("INSERT OR IGNORE INTO users (username, password) " +
-                "VALUES ('test_user', 'e10adc3949ba59abbe56e057f20f883e');");
+                "VALUES ('test_user', '123456');");
 
         db.execSQL("INSERT OR IGNORE INTO dreams (user_id, title, content, nature, tags, is_public, created_at) " +
                 "VALUES (1, '第一次测试梦境', '这是一条测试用的梦境内容，用于验证数据库功能', '好梦', '[\"测试\",\"好梦\"]', 1, '2024-01-01 10:00');");
@@ -109,7 +128,49 @@ public class DreamDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 2) {
+            // 添加用户信息扩展字段
+            try {
+                db.execSQL("ALTER TABLE users ADD COLUMN email TEXT");
+                db.execSQL("ALTER TABLE users ADD COLUMN phone TEXT");
+                db.execSQL("ALTER TABLE users ADD COLUMN gender TEXT");
+                db.execSQL("ALTER TABLE users ADD COLUMN birthday TEXT");
+                db.execSQL("ALTER TABLE users ADD COLUMN bio TEXT");
+                Log.d("DreamDatabaseHelper", "Database upgraded to version 2: Added user profile fields");
+            } catch (Exception e) {
+                Log.e("DreamDatabaseHelper", "Error upgrading database", e);
+            }
+        }
 
+        if (oldVersion < 3) {
+            // 添加收藏字段
+            try {
+                db.execSQL("ALTER TABLE dreams ADD COLUMN is_favorite INTEGER DEFAULT 0 CHECK (is_favorite IN (0, 1))");
+                Log.d("DreamDatabaseHelper", "Database upgraded to version 3: Added is_favorite column to dreams");
+            } catch (Exception e) {
+                Log.e("DreamDatabaseHelper", "Error upgrading database to version 3", e);
+            }
+        }
+
+        if (oldVersion < 4) {
+            // 添加聊天记录表
+            try {
+                db.execSQL("CREATE TABLE IF NOT EXISTS chat_messages (" +
+                        "message_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "match_id INTEGER NOT NULL," +
+                        "sender_id INTEGER NOT NULL," +
+                        "receiver_id INTEGER NOT NULL," +
+                        "content TEXT NOT NULL," +
+                        "created_at TEXT NOT NULL," +
+                        "FOREIGN KEY (match_id) REFERENCES matches (match_id) ON DELETE CASCADE," +
+                        "FOREIGN KEY (sender_id) REFERENCES users (user_id) ON DELETE CASCADE," +
+                        "FOREIGN KEY (receiver_id) REFERENCES users (user_id) ON DELETE CASCADE" +
+                        ");");
+                Log.d("DreamDatabaseHelper", "Database upgraded to version 4: Added chat_messages table");
+            } catch (Exception e) {
+                Log.e("DreamDatabaseHelper", "Error upgrading database to version 4", e);
+            }
+        }
     }
 
     // 每次打开数据库时确保外键生效（必须保留）

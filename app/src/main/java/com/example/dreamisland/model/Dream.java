@@ -9,9 +9,12 @@ public class Dream {
     private String tags;
     private boolean isPublic;
     private String createdAt;
+    private boolean isFavorite; // 是否收藏
+    private String username;
+    private String previewContent;
 
     // 构造函数
-    public Dream(int dreamId, int userId, String title, String content, String nature, String tags, boolean isPublic, String createdAt) {
+    public Dream(int dreamId, int userId, String title, String content, String nature, String tags, boolean isPublic, boolean isFavorite, String createdAt) {
         this.dreamId = dreamId;
         this.userId = userId;
         this.title = title;
@@ -19,6 +22,7 @@ public class Dream {
         this.nature = nature;
         this.tags = tags;
         this.isPublic = isPublic;
+        this.isFavorite = isFavorite;
         this.createdAt = createdAt;
     }
 
@@ -89,5 +93,29 @@ public class Dream {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPreviewContent() {
+        return previewContent;
+    }
+
+    public void setPreviewContent(String previewContent) {
+        this.previewContent = previewContent;
     }
 }

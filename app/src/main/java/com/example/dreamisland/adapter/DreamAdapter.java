@@ -50,14 +50,21 @@ public class DreamAdapter extends RecyclerView.Adapter<DreamAdapter.DreamViewHol
         holder.tvTitle.setText(dream.getTitle());
         holder.tvNature.setText(dream.getNature());
         holder.tvDate.setText(dream.getCreatedAt());
-        
+
+        // 设置收藏状态
+        if (dream.isFavorite()) {
+            holder.tvFavorite.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvFavorite.setVisibility(View.GONE);
+        }
+
         // 内容过长时显示省略号
         String content = dream.getContent();
         if (content.length() > 50) {
             content = content.substring(0, 50) + "...";
         }
         holder.tvContent.setText(content);
-        
+
         // 显示标签
         showTags(holder.layoutTags, dream.getTags());
 
@@ -87,7 +94,7 @@ public class DreamAdapter extends RecyclerView.Adapter<DreamAdapter.DreamViewHol
         this.dreamList = dreamList;
         notifyDataSetChanged();
     }
-    
+
     /**
      * 显示标签
      */
@@ -95,20 +102,20 @@ public class DreamAdapter extends RecyclerView.Adapter<DreamAdapter.DreamViewHol
         // 清空之前的标签
         container.removeAllViews();
         container.setVisibility(View.GONE);
-        
+
         if (tagsJson == null || tagsJson.isEmpty() || tagsJson.equals("[]")) {
             return;
         }
-        
+
         try {
             // 解析标签JSON
             Gson gson = new Gson();
             Type listType = new TypeToken<List<String>>() {}.getType();
             List<String> tagsList = gson.fromJson(tagsJson, listType);
-            
+
             if (tagsList != null && !tagsList.isEmpty()) {
                 container.setVisibility(View.VISIBLE);
-                
+
                 // 添加标签
                 for (String tag : tagsList) {
                     // 创建标签视图
@@ -118,14 +125,14 @@ public class DreamAdapter extends RecyclerView.Adapter<DreamAdapter.DreamViewHol
                     tagView.setTextColor(context.getResources().getColor(R.color.blue_dark));
                     tagView.setBackgroundColor(context.getResources().getColor(R.color.blue_light));
                     tagView.setPadding(8, 4, 8, 4);
-                    
+
                     // 添加间距
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT, 
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT);
                     params.setMargins(0, 0, 8, 0);
                     tagView.setLayoutParams(params);
-                    
+
                     container.addView(tagView);
                 }
             }
@@ -141,6 +148,7 @@ public class DreamAdapter extends RecyclerView.Adapter<DreamAdapter.DreamViewHol
         TextView tvNature;
         TextView tvDate;
         LinearLayout layoutTags;
+        TextView tvFavorite;
 
         public DreamViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -149,6 +157,7 @@ public class DreamAdapter extends RecyclerView.Adapter<DreamAdapter.DreamViewHol
             tvNature = itemView.findViewById(R.id.tv_dream_nature);
             tvDate = itemView.findViewById(R.id.tv_dream_date);
             layoutTags = itemView.findViewById(R.id.layout_dream_tags);
+            tvFavorite = itemView.findViewById(R.id.tv_favorite);
         }
     }
 }

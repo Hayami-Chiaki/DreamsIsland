@@ -3,15 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="我的梦境"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="20dp" />
+    android:padding="16dp"
+    android:paddingTop="?attr/actionBarSize">
 
     <!-- 功能按钮区域 -->
     <Button
@@ -33,7 +26,15 @@
             android:id="@+id/btn_view_match_dream"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="查看匹配对象的梦境" />
+            android:text="开始匹配用户"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/btn_disconnect_match"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="断开匹配"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_match_hint"

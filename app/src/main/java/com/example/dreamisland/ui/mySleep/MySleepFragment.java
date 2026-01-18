@@ -4,27 +4,43 @@ package com.example.dreamisland.ui.mySleep;
 import static android.content.ContentValues.TAG;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.content.Intent;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.transition.ChangeBounds;
+import androidx.transition.TransitionManager;
+
+import com.example.dreamisland.ui.myDreams.MyDreamDetailActivity;
 
 import com.example.dreamisland.R;
 import com.example.dreamisland.adapter.BodyStateAdapter;
 import com.example.dreamisland.adapter.CalendarAdapter;
 import com.example.dreamisland.adapter.HeatMapAdapter;
+import com.example.dreamisland.adapter.ChartPagerAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 import com.example.dreamisland.dao.BodyStateDao;
 import com.example.dreamisland.dao.DreamDao;
 import com.example.dreamisland.database.DreamDatabaseHelper;
 import com.example.dreamisland.dialog.StatisticsDialog;
 import com.example.dreamisland.entity.BodyState;
+import com.example.dreamisland.entity.Dream;
+
+
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,19 +56,30 @@ public class MySleepFragment extends Fragment {
     private DreamDatabaseHelper dbHelper;
     private BodyStateDao bodyStateDao;
     private DreamDao dreamDao; // 新增
-    private RecyclerView rvBodyStates;
     private RecyclerView rvCalendar;
-    private BodyStateAdapter bodyStateAdapter;
     private CalendarAdapter calendarAdapter;
-    private RecyclerView rvHeatMap;
-    private HeatMapAdapter heatMapAdapter;
+    private Button btnTired, btnGeneral, btnEnergetic;
+    private Button btnBodyStatus, btnDreamStatus;
+    private ImageButton btnPrevMonth, btnNextMonth;
+    private TextView tvCurrentDate;
+    private View vToggleBackground;
+    
+    // 图表相关变量
+    private ViewPager2 viewPagerCharts;
+    private ChartPagerAdapter chartPagerAdapter;
+    private Button btnPieChart, btnBarChart, btnDonutChart;
+    private View vChartToggleBackground;
 
-    private Button btnTired, btnGeneral, btnEnergetic, btnStatistics;
-
+    // 当前显示的年份和月份
+    private int currentDisplayYear;
+    private int currentDisplayMonth;
+    private boolean isBodyStatus = true;
+    
     private static final int CURRENT_USER_ID = 1;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     private SimpleDateFormat monthFormat = new SimpleDateFormat("yyyy-MM", Locale.getDefault());
     private SimpleDateFormat heatMapDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // 热力图专用
+    private SimpleDateFormat displayDateFormat = new SimpleDateFormat("yyyy年MM月", Locale.getDefault()); // 用于显示年月
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -74,42 +101,65 @@ public class MySleepFragment extends Fragment {
     }
 
     private void initViews(View root) {
-        rvBodyStates = root.findViewById(R.id.rvBodyStates);
         rvCalendar = root.findViewById(R.id.rvCalendar);
         btnTired = root.findViewById(R.id.btnTired);
         btnGeneral = root.findViewById(R.id.btnGeneral);
         btnEnergetic = root.findViewById(R.id.btnEnergetic);
-        btnStatistics = root.findViewById(R.id.btnStatistics);
+        btnBodyStatus = root.findViewById(R.id.btnBodyStatus);
+        btnDreamStatus = root.findViewById(R.id.btnDreamStatus);
+        btnPrevMonth = root.findViewById(R.id.btnPrevMonth);
+        btnNextMonth = root.findViewById(R.id.btnNextMonth);
+        tvCurrentDate = root.findViewById(R.id.tvCurrentDate);
+        vToggleBackground = root.findViewById(R.id.vToggleBackground);
 
-        // 初始化适配器
-        bodyStateAdapter = new BodyStateAdapter(new ArrayList<>());
-        rvBodyStates.setAdapter(bodyStateAdapter);
+        // 初始化当前显示的年月
+        Calendar currentCalendar = Calendar.getInstance();
+        currentDisplayYear = currentCalendar.get(Calendar.YEAR);
+        currentDisplayMonth = currentCalendar.get(Calendar.MONTH);
 
         // 初始化日历适配器
-        List<Date> currentMonthDates = getCurrentMonthDates();
+        List<Date> currentMonthDates = getMonthDates(currentDisplayYear, currentDisplayMonth);
         calendarAdapter = new CalendarAdapter(currentMonthDates, new ArrayList<>());
         rvCalendar.setAdapter(calendarAdapter);
+
+        // 设置日历日期点击监听器
+        calendarAdapter.setOnDateClickListener(this::onDateClick);
+
+        // 更新显示的年月
+        updateDisplayDate();
 
         // 设置按钮点击事件
         btnTired.setOnClickListener(v -> recordBodyState("疲惫"));
         btnGeneral.setOnClickListener(v -> recordBodyState("一般"));
         btnEnergetic.setOnClickListener(v -> recordBodyState("精神"));
-
-        btnStatistics.setOnClickListener(v -> showStatistics());
-
-        // 添加热力图
-        rvHeatMap = root.findViewById(R.id.rvHeatMap);
-        if (rvHeatMap != null) {
-            // 创建7列的网格布局（每周7天）
-            GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
-            rvHeatMap.setLayoutManager(layoutManager);
-
-            // 初始化热力图适配器
-            List<Date> heatMapDates = generateHeatMapDates();
-            Map<String, String> dreamData = getDreamDataForHeatMap();
-            heatMapAdapter = new HeatMapAdapter(heatMapDates, dreamData);
-            rvHeatMap.setAdapter(heatMapAdapter);
-        }
+        
+        // 月份切换按钮
+        btnPrevMonth.setOnClickListener(v -> navigateMonth(-1));
+        btnNextMonth.setOnClickListener(v -> navigateMonth(1));
+        
+        // 状态切换按钮
+        btnBodyStatus.setOnClickListener(v -> {
+            if (!isBodyStatus) {
+                switchToBodyStatus();
+            }
+        });
+        
+        btnDreamStatus.setOnClickListener(v -> {
+            if (isBodyStatus) {
+                switchToDreamStatus();
+            }
+        });
+        
+        // 默认选择身体状态
+        btnBodyStatus.setSelected(true);
+        btnDreamStatus.setSelected(false);
+        animateToggleBackground();
+        
+        // 初始化图表
+        initCharts(root);
+        
+        // 设置图表数据
+        setupCharts();
     }
 
     private Map<String, String> getDreamDataForHeatMap() {
@@ -211,22 +261,15 @@ public class MySleepFragment extends Fragment {
 
     private void loadBodyStates() {
         try {
-            // 从数据库加载所有记录
-            List<BodyState> bodyStates = bodyStateDao.getBodyStatesByUserId(CURRENT_USER_ID);
-            bodyStateAdapter.updateData(bodyStates);
-
             // 加载当前月份的数据用于日历
-            String currentMonth = monthFormat.format(new Date());
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, currentDisplayYear);
+            calendar.set(Calendar.MONTH, currentDisplayMonth);
+            String currentMonth = monthFormat.format(calendar.getTime());
+            
             List<BodyState> monthlyStates = bodyStateDao.getBodyStatesByMonth(CURRENT_USER_ID, currentMonth);
-            List<Date> monthDates = getCurrentMonthDates();
+            List<Date> monthDates = getMonthDates(currentDisplayYear, currentDisplayMonth);
             calendarAdapter.updateData(monthDates, monthlyStates);
-
-            // 刷新热力图数据
-            if (heatMapAdapter != null) {
-                Map<String, String> dreamData = getDreamDataForHeatMap();
-                List<Date> heatMapDates = generateHeatMapDates();
-                heatMapAdapter.updateData(heatMapDates, dreamData);
-            }
 
         } catch (Exception e) {
             Log.e(TAG, "Error in loadBodyStates: " + e.getMessage(), e);
@@ -238,27 +281,34 @@ public class MySleepFragment extends Fragment {
             String today = dateFormat.format(new Date());
 
             // 检查今天是否已记录
-            if (bodyStateDao.isAlreadyRecordedToday(CURRENT_USER_ID)) {
-                Toast.makeText(getContext(), "今天已记录过身体状态", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // 创建新的记录
-            BodyState bodyState = new BodyState(CURRENT_USER_ID, state, today);
-
-            // 插入数据库
-            long result = bodyStateDao.insert(bodyState);
-
-            if (result != -1) {
-                Toast.makeText(getContext(), "记录成功：" + state, Toast.LENGTH_SHORT).show();
-                loadBodyStates(); // 刷新数据
+            BodyState existingState = bodyStateDao.getBodyStateByDate(CURRENT_USER_ID, today);
+            
+            long result;
+            if (existingState != null) {
+                // 如果已存在记录，更新状态
+                existingState.setState(state);
+                result = bodyStateDao.update(existingState);
+                if (result != -1) {
+                    Toast.makeText(getContext(), "状态已更新为：" + state, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "更新失败", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(getContext(), "记录失败", Toast.LENGTH_SHORT).show();
+                // 如果不存在记录，创建新记录
+                BodyState bodyState = new BodyState(CURRENT_USER_ID, state, today);
+                result = bodyStateDao.insert(bodyState);
+                if (result != -1) {
+                    Toast.makeText(getContext(), "记录成功：" + state, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "记录失败", Toast.LENGTH_SHORT).show();
+                }
             }
+
+            loadBodyStates(); // 刷新数据
 
         } catch (Exception e) {
             Log.e(TAG, "Error in recordBodyState: " + e.getMessage(), e);
-            Toast.makeText(getContext(), "记录出错: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "操作出错: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -320,19 +370,16 @@ public class MySleepFragment extends Fragment {
         }
     }
 
-    private List<Date> getCurrentMonthDates() {
+    /**
+     * 获取指定年月的日期列表
+     */
+    private List<Date> getMonthDates(int year, int month) {
         List<Date> dates = new ArrayList<>();
         try {
-            Calendar calendar = Calendar.getInstance();
-
-            // 获取当前月份信息
-            int currentYear = calendar.get(Calendar.YEAR);
-            int currentMonth = calendar.get(Calendar.MONTH);
-
-            // 创建当前月份第一天的日历
+            // 创建指定月份第一天的日历
             Calendar firstDay = Calendar.getInstance();
-            firstDay.set(Calendar.YEAR, currentYear);
-            firstDay.set(Calendar.MONTH, currentMonth);
+            firstDay.set(Calendar.YEAR, year);
+            firstDay.set(Calendar.MONTH, month);
             firstDay.set(Calendar.DAY_OF_MONTH, 1);
             firstDay.set(Calendar.HOUR_OF_DAY, 0);
             firstDay.set(Calendar.MINUTE, 0);
@@ -357,8 +404,8 @@ public class MySleepFragment extends Fragment {
             // 添加当前月份的日期
             for (int i = 1; i <= daysInMonth; i++) {
                 Calendar dayCal = Calendar.getInstance();
-                dayCal.set(Calendar.YEAR, currentYear);
-                dayCal.set(Calendar.MONTH, currentMonth);
+                dayCal.set(Calendar.YEAR, year);
+                dayCal.set(Calendar.MONTH, month);
                 dayCal.set(Calendar.DAY_OF_MONTH, i);
                 dayCal.set(Calendar.HOUR_OF_DAY, 0);
                 dayCal.set(Calendar.MINUTE, 0);
@@ -370,16 +417,334 @@ public class MySleepFragment extends Fragment {
             Log.d(TAG, "Generated " + dates.size() + " dates for calendar");
 
         } catch (Exception e) {
-            Log.e(TAG, "Error in getCurrentMonthDates: " + e.getMessage(), e);
+            Log.e(TAG, "Error in getMonthDates: " + e.getMessage(), e);
         }
         return dates;
+    }
+    
+    /**
+     * 更新显示的年月
+     */
+    private void updateDisplayDate() {
+        Calendar displayCalendar = Calendar.getInstance();
+        displayCalendar.set(Calendar.YEAR, currentDisplayYear);
+        displayCalendar.set(Calendar.MONTH, currentDisplayMonth);
+        tvCurrentDate.setText(displayDateFormat.format(displayCalendar.getTime()));
+    }
+    
+    /**
+     * 月份导航
+     * @param direction -1: 上一个月, 1: 下一个月
+     */
+    private void navigateMonth(int direction) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, currentDisplayYear);
+        calendar.set(Calendar.MONTH, currentDisplayMonth);
+        calendar.add(Calendar.MONTH, direction);
+        
+        currentDisplayYear = calendar.get(Calendar.YEAR);
+        currentDisplayMonth = calendar.get(Calendar.MONTH);
+        
+        // 加载新月份的数据
+        loadMonthData();
+        
+        // 更新显示的年月
+        updateDisplayDate();
+    }
+    
+    /**
+     * 加载指定月份的数据
+     */
+    private void loadMonthData() {
+        try {
+            // 格式化月份
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.YEAR, currentDisplayYear);
+            calendar.set(Calendar.MONTH, currentDisplayMonth);
+            String month = monthFormat.format(calendar.getTime());
+            List<Date> monthDates = getMonthDates(currentDisplayYear, currentDisplayMonth);
+            
+            if (isBodyStatus) {
+                // 加载身体状态数据
+                List<BodyState> monthlyStates = bodyStateDao.getBodyStatesByMonth(CURRENT_USER_ID, month);
+                calendarAdapter.updateData(monthDates, monthlyStates);
+            } else {
+                // 加载梦境状态数据
+                List<Dream> monthlyDreams = dreamDao.getDreamsByMonth(CURRENT_USER_ID, month);
+                calendarAdapter.updateDreamData(monthDates, monthlyDreams);
+            }
+            
+        } catch (Exception e) {
+            Log.e(TAG, "Error in loadMonthData: " + e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * 切换到身体状态
+     */
+    private void switchToBodyStatus() {
+        isBodyStatus = true;
+        btnBodyStatus.setSelected(true);
+        btnDreamStatus.setSelected(false);
+        animateToggleBackground();
+        // 告诉适配器当前是身体状态
+        calendarAdapter.setBodyStatus(true);
+        // 加载身体状态数据
+        loadMonthData();
+        // 更新图表数据类型
+        if (chartPagerAdapter != null) {
+            chartPagerAdapter.updateDataType(true);
+            setupCharts();
+        }
+    }
+    
+    /**
+     * 切换到梦境状态
+     */
+    private void switchToDreamStatus() {
+        isBodyStatus = false;
+        btnBodyStatus.setSelected(false);
+        btnDreamStatus.setSelected(true);
+        animateToggleBackground();
+        // 告诉适配器当前是梦境状态
+        calendarAdapter.setBodyStatus(false);
+        // 加载梦境状态数据
+        loadMonthData();
+        // 更新图表数据类型
+        if (chartPagerAdapter != null) {
+            chartPagerAdapter.updateDataType(false);
+            setupCharts();
+        }
+    }
+    
+    /**
+     * 动画切换背景位置
+     */
+    private void animateToggleBackground() {
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) vToggleBackground.getLayoutParams();
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone((ConstraintLayout) vToggleBackground.getParent());
+        
+        if (isBodyStatus) {
+            // 切换到身体状态，背景在左边
+            constraintSet.clear(vToggleBackground.getId(), ConstraintSet.END);
+            constraintSet.connect(vToggleBackground.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+        } else {
+            // 切换到梦境状态，背景在右边
+            constraintSet.clear(vToggleBackground.getId(), ConstraintSet.START);
+            constraintSet.connect(vToggleBackground.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+        }
+        
+        // 应用动画
+        TransitionManager.beginDelayedTransition((ConstraintLayout) vToggleBackground.getParent(), 
+                new ChangeBounds().setDuration(300).setInterpolator(new FastOutSlowInInterpolator()));
+        constraintSet.applyTo((ConstraintLayout) vToggleBackground.getParent());
+    }
+    
+    // 初始化图表
+    private void initCharts(View root) {
+        // 初始化图表切换按钮和滑动背景
+        btnPieChart = root.findViewById(R.id.btnPieChart);
+        btnBarChart = root.findViewById(R.id.btnBarChart);
+        btnDonutChart = root.findViewById(R.id.btnDonutChart);
+        vChartToggleBackground = root.findViewById(R.id.vChartToggleBackground);
+        
+        // 初始化ViewPager2
+        viewPagerCharts = root.findViewById(R.id.viewPagerCharts);
+        
+        // 创建图表适配器，并传递用户ID、当前月份信息和数据类型
+        int userId = 1; // 假设当前用户ID为1，实际应用中应该从用户登录信息获取
+        String currentMonth = String.format(Locale.getDefault(), "%04d-%02d", currentDisplayYear, currentDisplayMonth + 1);
+        chartPagerAdapter = new ChartPagerAdapter(getActivity(), userId, currentMonth, isBodyStatus);
+        viewPagerCharts.setAdapter(chartPagerAdapter);
+        
+        // 设置图表切换监听
+        setupChartToggleListeners();
+        
+        // 默认选择第一个图表
+        btnPieChart.setSelected(true);
+        btnBarChart.setSelected(false);
+        btnDonutChart.setSelected(false);
+    }
+    
+    // 设置图表数据
+    private void setupCharts() {
+        // 图表数据在各自的Fragment中设置
+    }
+    
+    // 设置图表切换监听
+    private void setupChartToggleListeners() {
+        // 饼状图按钮点击事件
+        btnPieChart.setOnClickListener(v -> {
+            viewPagerCharts.setCurrentItem(0, true);
+            updateChartButtonSelection(0);
+        });
+        
+        // 条形图按钮点击事件
+        btnBarChart.setOnClickListener(v -> {
+            viewPagerCharts.setCurrentItem(1, true);
+            updateChartButtonSelection(1);
+        });
+        
+        // 环形图按钮点击事件
+        btnDonutChart.setOnClickListener(v -> {
+            viewPagerCharts.setCurrentItem(2, true);
+            updateChartButtonSelection(2);
+        });
+        
+        // ViewPager页面切换监听
+        viewPagerCharts.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                updateChartButtonSelection(position);
+            }
+        });
+    }
+    
+    // 更新图表按钮选中状态
+    private void updateChartButtonSelection(int selectedPosition) {
+        // 更新按钮选中状态
+        btnPieChart.setSelected(selectedPosition == 0);
+        btnBarChart.setSelected(selectedPosition == 1);
+        btnDonutChart.setSelected(selectedPosition == 2);
+        
+        // 动画切换背景位置
+        animateChartToggleBackground(selectedPosition);
+    }
+    
+    /**
+     * 动画切换图表按钮背景位置
+     */
+    private void animateChartToggleBackground(int position) {
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone((ConstraintLayout) vChartToggleBackground.getParent());
+        
+        // 清除之前的约束
+        constraintSet.clear(vChartToggleBackground.getId(), ConstraintSet.START);
+        constraintSet.clear(vChartToggleBackground.getId(), ConstraintSet.END);
+        
+        switch (position) {
+            case 0: // 饼状图
+                constraintSet.connect(vChartToggleBackground.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+                break;
+            case 1: // 条形图
+                constraintSet.connect(vChartToggleBackground.getId(), ConstraintSet.START, R.id.btnBarChart, ConstraintSet.START);
+                break;
+            case 2: // 环形图
+                constraintSet.connect(vChartToggleBackground.getId(), ConstraintSet.START, R.id.btnDonutChart, ConstraintSet.START);
+                break;
+        }
+        
+        // 应用动画
+        TransitionManager.beginDelayedTransition((ConstraintLayout) vChartToggleBackground.getParent(), 
+                new ChangeBounds().setDuration(300).setInterpolator(new FastOutSlowInInterpolator()));
+        constraintSet.applyTo((ConstraintLayout) vChartToggleBackground.getParent());
+    }
+
+    // 定期更新图表数据相关
+    private Handler updateHandler;
+    private Runnable updateRunnable;
+    private static final long UPDATE_INTERVAL = 5000; // 5秒更新一次
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 启动定期更新
+        startChartUpdates();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // 停止定期更新
+        stopChartUpdates();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        stopChartUpdates(); // 确保停止更新
         if (dbHelper != null) {
             dbHelper.close();
+        }
+    }
+
+    /**
+     * 启动图表定期更新
+     */
+    private void startChartUpdates() {
+        updateHandler = new Handler();
+        updateRunnable = new Runnable() {
+            @Override
+            public void run() {
+                updateAllCharts();
+                updateHandler.postDelayed(this, UPDATE_INTERVAL);
+            }
+        };
+        updateHandler.postDelayed(updateRunnable, UPDATE_INTERVAL);
+    }
+
+    /**
+     * 停止图表定期更新
+     */
+    private void stopChartUpdates() {
+        if (updateHandler != null && updateRunnable != null) {
+            updateHandler.removeCallbacks(updateRunnable);
+            updateHandler = null;
+            updateRunnable = null;
+        }
+    }
+
+    /**
+     * 更新所有图表数据
+     */
+    private void updateAllCharts() {
+        // 更新当前显示的图表
+        int currentPosition = viewPagerCharts.getCurrentItem();
+        Fragment currentFragment = chartPagerAdapter.getFragment(currentPosition);
+        
+        if (currentFragment != null) {
+            if (currentFragment instanceof PieChartFragment) {
+                ((PieChartFragment) currentFragment).updateChartData();
+            } else if (currentFragment instanceof BarChartFragment) {
+                ((BarChartFragment) currentFragment).updateChartData();
+            } else if (currentFragment instanceof DonutChartFragment) {
+                ((DonutChartFragment) currentFragment).updateChartData();
+            }
+        }
+    }
+
+    /**
+     * 处理日期点击事件
+     */
+    private void onDateClick(Date date) {
+        try {
+            // 格式化日期为yyyy-MM-dd
+            String dateStr = dateFormat.format(date);
+            
+            // 获取该日期的所有梦境记录
+            List<Dream> dreams = dreamDao.getDreamsByDateRange(CURRENT_USER_ID, dateStr, dateStr);
+            
+            if (dreams != null && !dreams.isEmpty()) {
+                // 如果有多个梦境，显示第一个（实际应用中可以显示列表选择）
+                Dream dream = dreams.get(0);
+                
+                // 打开梦境详情页面
+                Intent intent = new Intent(getActivity(), MyDreamDetailActivity.class);
+                intent.putExtra("title", dream.getTitle());
+                intent.putExtra("content", dream.getContent());
+                intent.putExtra("nature", dream.getNature());
+                intent.putExtra("createdAt", dream.getCreatedAt());
+                intent.putExtra("isPublic", dream.getIsPublic() == 1);
+                intent.putExtra("tags", dream.getTags());
+                startActivity(intent);
+            } else {
+                // 没有梦境记录
+                Toast.makeText(getContext(), "该日期没有梦境记录", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error handling date click: " + e.getMessage(), e);
+            Toast.makeText(getContext(), "获取梦境记录失败", Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -42,6 +42,46 @@ public class DreamDao {
         }
 
         cursor.close();
+    return dreams;
+}
+
+// 查询用户指定日期范围内的梦境
+public List<Dream> getDreamsInDateRange(int userId, String startDate, String endDate) {
+    List<Dream> dreams = new ArrayList<>();
+
+    String sql = "SELECT * FROM dreams WHERE user_id = ? " +
+            "AND date(created_at) BETWEEN ? AND ? " +
+            "ORDER BY created_at DESC";
+
+    Cursor cursor = db.rawQuery(sql,
+            new String[]{String.valueOf(userId), startDate, endDate});
+
+    while (cursor.moveToNext()) {
+        Dream dream = cursorToDream(cursor);
+        dreams.add(dream);
+    }
+
+    cursor.close();
+    return dreams;
+}
+    
+    // 查询用户指定月份的梦境
+    public List<Dream> getDreamsByMonth(int userId, String month) {
+        List<Dream> dreams = new ArrayList<>();
+
+        String sql = "SELECT * FROM dreams WHERE user_id = ? " +
+                "AND date(created_at) LIKE ? " +
+                "ORDER BY created_at DESC";
+
+        Cursor cursor = db.rawQuery(sql,
+                new String[]{String.valueOf(userId), month + "%"});
+
+        while (cursor.moveToNext()) {
+            Dream dream = cursorToDream(cursor);
+            dreams.add(dream);
+        }
+
+        cursor.close();
         return dreams;
     }
 
