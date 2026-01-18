@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="@color/tertiary_20">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
@@ -12,7 +13,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/tertiary_60"
         android:title="梦境详情"
-        android:titleTextColor="@color/tertiary_10"
+        android:titleTextColor="@android:color/white"
         app:navigationIcon="@android:drawable/ic_menu_revert"
         app:menu="@menu/menu_my_dream_detail"/>
 
@@ -28,12 +29,12 @@
             android:padding="16dp">
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardUseCompatPadding="true"
-                app:cardBackgroundColor="@color/white"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="70dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true"
+            app:cardBackgroundColor="@color/tertiary_95"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="70dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -120,10 +121,10 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardUseCompatPadding="true"
-                app:cardBackgroundColor="@color/white">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardUseCompatPadding="true"
+            app:cardBackgroundColor="@color/tertiary_95">
 
                 <TextView
                     android:id="@+id/tvContent"

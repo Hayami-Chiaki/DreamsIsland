@@ -14,10 +14,7 @@
     <item>
         <shape android:shape="rectangle">
             <!-- 正常状态的背景色 -->
-            <!-- 使用#ffffff，而不是@color/white，以避免潜在的引用问题 -->
-            <gradient android:angle="0"
-                android:endColor="#ffffff"
-                android:startColor="#ffffff" />
+            <solid android:color="@color/tertiary_95" />
             <!-- 设置圆角半径 -->
             <corners android:radius="8dp" />
             <!-- 设置边框 -->

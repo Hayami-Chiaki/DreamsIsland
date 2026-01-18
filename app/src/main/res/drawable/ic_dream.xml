@@ -4,10 +4,10 @@
     android:viewportWidth="1024"
     android:viewportHeight="1024">
     <path
-        android:fillColor="#5B247F"
+        android:fillColor="@color/tertiary_30"
         android:pathData="M270.5,596.75l435.85,203.22c29.27,13.65 62.81,-7.72 62.81,-40.02V267.16c0,-24.39 -19.77,-44.15 -44.15,-44.15H289.16c-24.39,0 -44.15,19.77 -44.15,44.15v289.58c0,17.16 9.94,32.77 25.5,40.02z"/>
     <path
-        android:fillColor="#B994FE"
+        android:fillColor="@color/tertiary_60"
         android:pathData="M289.15,816.65c-31.24,0 -56.65,-25.44 -56.65,-56.71V267.15c0,-31.24 25.42,-56.65 56.65,-56.65H725c31.24,0 56.65,25.42 56.65,56.65v289.58c0,21.93 -12.84,42.08 -32.71,51.35L313.09,811.3c-7.63,3.56 -15.68,5.36 -23.94,5.36z"/>
     <path
         android:fillColor="#FFFFFF"

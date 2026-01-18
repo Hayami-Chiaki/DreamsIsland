@@ -131,13 +131,13 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
-                ((TextView) v).setTextColor(ContextCompat.getColor(EditProfileActivity.this, R.color.tertiary_50));
+                ((TextView) v).setTextColor(ContextCompat.getColor(EditProfileActivity.this, android.R.color.white));
                 return v;
             }
             @Override
             public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 View v = super.getDropDownView(position, convertView, parent);
-                ((TextView) v).setTextColor(ContextCompat.getColor(EditProfileActivity.this, R.color.tertiary_50));
+                ((TextView) v).setTextColor(ContextCompat.getColor(EditProfileActivity.this, android.R.color.white));
                 ((TextView) v).setBackgroundColor(ContextCompat.getColor(EditProfileActivity.this, R.color.tertiary_30));
                 return v;
             }

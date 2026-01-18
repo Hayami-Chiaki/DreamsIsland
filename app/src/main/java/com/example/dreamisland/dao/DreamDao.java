@@ -5,7 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.dreamisland.entity.Dream;
+import com.example.dreamisland.model.Dream;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -145,7 +145,7 @@ public class DreamDao {
         dream.setContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
         dream.setNature(cursor.getString(cursor.getColumnIndexOrThrow("nature")));
         dream.setTags(cursor.getString(cursor.getColumnIndexOrThrow("tags")));
-        dream.setIsPublic(cursor.getInt(cursor.getColumnIndexOrThrow("is_public")));
+        dream.setPublic(cursor.getInt(cursor.getColumnIndexOrThrow("is_public")) == 1);
         dream.setCreatedAt(cursor.getString(cursor.getColumnIndexOrThrow("created_at")));
         return dream;
     }

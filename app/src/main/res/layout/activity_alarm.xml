@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:clipToPadding="true"
+    android:background="@color/tertiary_20"
     tools:context=".ui.profile.AlarmActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         android:paddingTop="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -31,34 +31,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="4dp"
+            app:cardElevation="0dp"
             app:layout_constraintTop_toBottomOf="@id/topBar">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:gravity="center"
                 android:background="@color/tertiary_10">
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipSleep"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
                     android:checked="true"
                     android:text="入睡提醒"
+                    android:textAlignment="center"
                     app:chipBackgroundColor="@color/tertiary_60"/>
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipWake"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
                     android:text="起床提醒"
+                    android:textAlignment="center"
                     app:chipBackgroundColor="@color/tertiary_60" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -68,6 +78,8 @@
             android:id="@+id/enableCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
             app:layout_constraintTop_toBottomOf="@id/typeCard"
@@ -102,6 +114,8 @@
             android:id="@+id/timeCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
@@ -138,6 +152,8 @@
             android:id="@+id/repeatCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"

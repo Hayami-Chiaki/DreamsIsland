@@ -25,7 +25,8 @@ public class RepliesAdapter extends RecyclerView.Adapter<RepliesAdapter.ViewHold
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         TextView tv = (TextView) LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
         tv.setTextSize(14);
-        tv.setTextColor(ContextCompat.getColor(parent.getContext(), R.color.tertiary_60));
+        tv.setTextColor(ContextCompat.getColor(parent.getContext(), R.color.tertiary_70));
+        tv.setPadding(16, 16, 16, 16);
         return new ViewHolder(tv);
     }
 

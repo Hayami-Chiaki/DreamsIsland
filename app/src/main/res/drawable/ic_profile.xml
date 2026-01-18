@@ -5,17 +5,17 @@
     android:viewportHeight="1024">
     <!-- 左侧大圆 -->
     <path
-        android:fillColor="#5B247F"
+        android:fillColor="@color/tertiary_30"
         android:pathData="M583.47,369.81m-136.81,0a136.81,136.81 0,1 0 273.62,0a136.81,136.81 0,1 0-273.62,0Z"/>
     
     <!-- 右侧矩形 -->
     <path
-        android:fillColor="#5B247F"
+        android:fillColor="@color/tertiary_30"
         android:pathData="M330.97,548.37m121.45,0l262.1,0q121.45,0 121.45,121.45l0,0q0,121.45 -121.45,121.45l-262.1,0q-121.45,0 -121.45,-121.45l0,0q0,-121.45 121.45,-121.45Z"/>
     
     <!-- 左侧中圆 -->
     <path
-        android:fillColor="#B994FE"
+        android:fillColor="@color/tertiary_60"
         android:pathData="M444.76,519.74c-88.53,0 -160.56,-72.03 -160.56,-160.56s72.03,-160.56 160.56,-160.56s160.56,72.03 160.56,160.56S533.29,519.74 444.76,519.74z"/>
     
     <!-- 左侧中圆边框 -->
@@ -25,7 +25,7 @@
     
     <!-- 右侧大矩形 -->
     <path
-        android:fillColor="#B994FE"
+        android:fillColor="@color/tertiary_60"
         android:pathData="M302.93,813.75c-79.36,0 -143.93,-64.57 -143.93,-143.93s64.57,-143.93 143.93,-143.93h283.65c79.36,0 143.93,64.57 143.93,143.93s-64.57,143.93 -143.93,143.93H302.93z"/>
     
     <!-- 右侧大矩形边框 -->

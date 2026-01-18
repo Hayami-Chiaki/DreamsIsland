@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:paddingTop="?attr/actionBarSize">
+    android:padding="16dp">
 
     <!-- 功能按钮区域 -->
     <Button
@@ -12,33 +12,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="记录梦境"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="72dp"/>
+        android:layout_marginBottom="10dp" />
 
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="#f0f0f0"
-        android:padding="12dp"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="20dp"
+        app:cardBackgroundColor="@color/tertiary_95"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp">
 
-        <Button
-            android:id="@+id/btn_view_match_dream"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="查看匹配对象的梦境" />
+            android:orientation="vertical"
+            android:padding="12dp">
 
-        <TextView
-            android:id="@+id/tv_match_hint"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="暂无匹配对象"
-            android:textSize="12sp"
-            android:textColor="#666"
-            android:layout_marginTop="4dp" />
+            <Button
+                android:id="@+id/btn_view_match_dream"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="查看匹配对象的梦境" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_match_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="暂无匹配对象"
+                android:textSize="12sp"
+                android:textColor="#666"
+                android:layout_marginTop="4dp" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- 梦境列表标题 -->
     <TextView
