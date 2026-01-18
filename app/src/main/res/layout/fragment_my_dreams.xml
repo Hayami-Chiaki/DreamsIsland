@@ -14,38 +14,38 @@
         android:text="记录梦境"
         android:layout_marginBottom="10dp" />
 
-    <com.google.android.material.card.MaterialCardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        app:cardBackgroundColor="@color/tertiary_95"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="0dp"
-        app:strokeWidth="0dp">
+        android:orientation="vertical"
+        android:background="#f0f0f0"
+        android:padding="12dp"
+        android:layout_marginBottom="20dp">
 
-        <LinearLayout
+        <Button
+            android:id="@+id/btn_view_match_dream"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
+            android:text="开始匹配用户"
+            android:layout_marginBottom="8dp"/>
 
-            <Button
-                android:id="@+id/btn_view_match_dream"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="查看匹配对象的梦境" />
+        <Button
+            android:id="@+id/btn_disconnect_match"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="断开匹配"
+            android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/tv_match_hint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="暂无匹配对象"
-                android:textSize="12sp"
-                android:textColor="#666"
-                android:layout_marginTop="4dp" />
+        <TextView
+            android:id="@+id/tv_match_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="暂无匹配对象"
+            android:textSize="12sp"
+            android:textColor="#666"
+            android:layout_marginTop="4dp" />
 
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 
     <!-- 梦境列表标题 -->
     <TextView

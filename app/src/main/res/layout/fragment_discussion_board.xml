@@ -39,11 +39,13 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:contentDescription="new post"
+
         app:backgroundTint="@color/tertiary_50"
         app:tint="@android:color/white"
         app:srcCompat="@android:drawable/ic_input_add"
         app:elevation="8dp"
         android:layout_gravity="bottom|end"
+
         android:layout_marginBottom="50dp"
         android:layout_marginEnd="20dp"
         app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior" />

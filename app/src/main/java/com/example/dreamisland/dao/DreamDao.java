@@ -5,7 +5,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.dreamisland.model.Dream;
+import com.example.dreamisland.entity.Dream;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,6 +35,46 @@ public class DreamDao {
                 new String[]{String.valueOf(userId)},
                 null, null,
                 "created_at DESC");
+
+        while (cursor.moveToNext()) {
+            Dream dream = cursorToDream(cursor);
+            dreams.add(dream);
+        }
+
+        cursor.close();
+    return dreams;
+}
+
+// 查询用户指定日期范围内的梦境
+public List<Dream> getDreamsInDateRange(int userId, String startDate, String endDate) {
+    List<Dream> dreams = new ArrayList<>();
+
+    String sql = "SELECT * FROM dreams WHERE user_id = ? " +
+            "AND date(created_at) BETWEEN ? AND ? " +
+            "ORDER BY created_at DESC";
+
+    Cursor cursor = db.rawQuery(sql,
+            new String[]{String.valueOf(userId), startDate, endDate});
+
+    while (cursor.moveToNext()) {
+        Dream dream = cursorToDream(cursor);
+        dreams.add(dream);
+    }
+
+    cursor.close();
+    return dreams;
+}
+    
+    // 查询用户指定月份的梦境
+    public List<Dream> getDreamsByMonth(int userId, String month) {
+        List<Dream> dreams = new ArrayList<>();
+
+        String sql = "SELECT * FROM dreams WHERE user_id = ? " +
+                "AND date(created_at) LIKE ? " +
+                "ORDER BY created_at DESC";
+
+        Cursor cursor = db.rawQuery(sql,
+                new String[]{String.valueOf(userId), month + "%"});
 
         while (cursor.moveToNext()) {
             Dream dream = cursorToDream(cursor);
@@ -145,7 +185,7 @@ public class DreamDao {
         dream.setContent(cursor.getString(cursor.getColumnIndexOrThrow("content")));
         dream.setNature(cursor.getString(cursor.getColumnIndexOrThrow("nature")));
         dream.setTags(cursor.getString(cursor.getColumnIndexOrThrow("tags")));
-        dream.setPublic(cursor.getInt(cursor.getColumnIndexOrThrow("is_public")) == 1);
+        dream.setIsPublic(cursor.getInt(cursor.getColumnIndexOrThrow("is_public")));
         dream.setCreatedAt(cursor.getString(cursor.getColumnIndexOrThrow("created_at")));
         return dream;
     }

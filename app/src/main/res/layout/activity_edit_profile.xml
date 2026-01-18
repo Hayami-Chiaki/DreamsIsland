@@ -12,6 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -20,6 +21,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/tertiary_60"
             android:title="@string/edit_profile_title"
+
             android:titleTextColor="@android:color/white"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +30,7 @@
         <!-- 头像区域 -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/avatarCard"
+
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -80,6 +83,7 @@
             android:focusable="false"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp"
+
             app:layout_constraintTop_toBottomOf="@id/avatarCard"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
@@ -110,6 +114,7 @@
                         android:enabled="true"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
+
                         android:background="@color/tertiary_20"
                         android:textColor="@android:color/white"/>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -131,6 +136,7 @@
                         android:enabled="true"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
+
                         android:background="@color/tertiary_20"
                         android:textColor="@android:color/white"/>
                 </com.google.android.material.textfield.TextInputLayout>

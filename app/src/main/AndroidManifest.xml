@@ -70,6 +70,18 @@
             android:exported="false"
             android:label="梦境详情"
             android:parentActivityName=".MainActivity" />
+        
+        <activity
+            android:name=".ui.myDreams.MatchedDreamsActivity"
+            android:exported="false"
+            android:label="匹配对象的梦境"
+            android:parentActivityName=".MainActivity" />
+            
+        <activity
+            android:name=".ui.myDreams.MatchedDreamDetailActivity"
+            android:exported="false"
+            android:label="梦境详情"
+            android:parentActivityName=".ui.myDreams.MatchedDreamsActivity" />
             
         <receiver
             android:name=".ui.profile.AlarmReceiver"

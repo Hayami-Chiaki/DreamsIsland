@@ -23,10 +23,9 @@ import com.example.dreamisland.ui.auth.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    // 1. 修正：只保留实际使用的 MaterialToolbar 类型，删除重复定义
+    // 声明 toolbar 和 binding 成员变量
     private MaterialToolbar toolbar;
     private DreamDatabaseHelper databaseHelper;
-    // 2. 新增：声明 binding 成员变量，匹配布局绑定类
     private ActivityMainBinding binding;
 
     @Override
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         // 测试数据库连接（开发阶段使用）
         testDatabaseConnection();
 
-        // 3. 优化：使用 ViewBinding 查找控件，替代 findViewById（更安全）
+        // 使用 ViewBinding 查找控件，替代 findViewById（更安全）
         toolbar = binding.topAppBar;
         setSupportActionBar(toolbar);
 
@@ -67,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-        // 4. 修正：Lambda 表达式语法，补全 destination id 获取，修复大括号匹配
+        // 监听导航变化，根据目标页面设置不同的 Toolbar 显示效果
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             // 获取当前导航目的地的 id
             int id = destination.getId();
-            
+
             // 广场页面使用自己内部的 Toolbar，所以隐藏全局的
             if (id == R.id.navigation_square) {
                 toolbar.setVisibility(View.GONE);

@@ -6,12 +6,14 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:clipToPadding="true"
+
     android:background="@color/tertiary_20"
     tools:context=".ui.profile.AlarmActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="16dp"
         android:paddingTop="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -51,6 +53,7 @@
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipSleep"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
+
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -63,6 +66,7 @@
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chipWake"
                     style="@style/Widget.MaterialComponents.Chip.Choice"
+
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -78,6 +82,7 @@
             android:id="@+id/enableCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             app:cardCornerRadius="12dp"
@@ -114,6 +119,7 @@
             android:id="@+id/timeCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"

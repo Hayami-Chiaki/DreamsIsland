@@ -48,6 +48,8 @@ dependencies {
     implementation(libs.room.common.jvm)
 
     implementation(libs.gson)
+    implementation(libs.mpandroidchart)
+    implementation(libs.viewpager2)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

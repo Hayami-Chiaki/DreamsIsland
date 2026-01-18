@@ -5,6 +5,7 @@
     android:padding="16dp"
     android:paddingTop="0dp"
     android:fitsSystemWindows="true"
+
     android:clipToPadding="true"
     android:background="@color/tertiary_20">
 

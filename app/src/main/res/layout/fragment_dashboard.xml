@@ -7,6 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.mySleep.MySleepFragment">
 
+    <!-- 添加可滚动容器 -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="32dp">
     <!-- 记录按钮区域 -->
     <LinearLayout
         android:id="@+id/llRecordButtons"
@@ -22,114 +35,328 @@
         <Button
             android:id="@+id/btnTired"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
             android:text="@string/tired"
-            android:backgroundTint="@color/color_tired"
-            android:textColor="@android:color/white"/>
+            android:backgroundTint="@color/secondary_color"
+            android:textColor="@android:color/white"
+            android:stateListAnimator="@animator/button_tired_animator"
+            app:cornerRadius="8dp"
+            style="@style/Widget.Material3.Button"/>
 
         <Button
             android:id="@+id/btnGeneral"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:layout_marginHorizontal="8dp"
             android:text="@string/normal"
-            android:backgroundTint="@color/color_general"
-            android:textColor="@android:color/white"/>
+            android:backgroundTint="@color/secondary_color"
+            android:textColor="@android:color/white"
+            android:stateListAnimator="@animator/button_general_animator"
+            app:cornerRadius="8dp"
+            style="@style/Widget.Material3.Button"/>
 
         <Button
             android:id="@+id/btnEnergetic"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:layout_marginStart="8dp"
             android:text="@string/mental"
-            android:backgroundTint="@color/color_energetic"
-            android:textColor="@android:color/white"/>
+            android:backgroundTint="@color/secondary_color"
+            android:textColor="@android:color/white"
+            android:stateListAnimator="@animator/button_energetic_animator"
+            app:cornerRadius="8dp"
+            style="@style/Widget.Material3.Button"/>
+    </LinearLayout>
+
+    <!-- 日历导航栏 -->
+    <LinearLayout
+        android:id="@+id/llCalendarNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@id/llRecordButtons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnPrevMonth"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_arrow_back_24"
+            android:background="@android:color/transparent"
+            android:contentDescription="上一月"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/tvCurrentDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2026年1月"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:paddingVertical="8dp"
+            android:layout_marginEnd="16dp"/>
+
+        <!-- 状态切换按钮 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clStatusToggle"
+            android:layout_width="140dp"
+            android:layout_height="32dp"
+            android:background="@drawable/status_toggle_background">
+
+            <!-- 滑动背景 -->
+            <View
+                android:id="@+id/vToggleBackground"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/status_toggle_selected"
+                android:transitionName="toggleBackground"
+                app:layout_constraintWidth_percent="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <!-- 身体状态按钮 -->
+            <Button
+                android:id="@+id/btnBodyStatus"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintWidth_percent="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="身体"
+                android:textSize="10sp"
+                android:background="@android:color/transparent"
+                android:textColor="@color/status_toggle_text"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
+                style="@style/Widget.Material3.Button.TextButton"/>
+
+            <!-- 梦境状态按钮 -->
+            <Button
+                android:id="@+id/btnDreamStatus"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintWidth_percent="0.5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="梦境"
+                android:textSize="10sp"
+                android:background="@android:color/transparent"
+                android:textColor="@color/status_toggle_text"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
+                style="@style/Widget.Material3.Button.TextButton"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageButton
+            android:id="@+id/btnNextMonth"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_arrow_back_24"
+            android:rotation="180"
+            android:contentDescription="下一月"
+            android:layout_marginStart="16dp"
+            android:background="@android:color/transparent"
+            app:tint="@color/white" />
+    </LinearLayout>
+
+    <!-- 星期标题 -->
+    <LinearLayout
+        android:id="@+id/llWeekDays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingHorizontal="8dp"
+        app:layout_constraintTop_toBottomOf="@id/llCalendarNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="一"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="二"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="三"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="四"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="五"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="六"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="@color/white"/>
+
+        <TextView
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1"
+        android:text="日"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:textColor="@color/white"/>
     </LinearLayout>
 
     <!-- 热力图日历 -->
-    <TextView
-        android:id="@+id/tvCalendarTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/month_status_date"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@id/llRecordButtons"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCalendar"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:padding="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/tvCalendarTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- 统计按钮 -->
-    <Button
-        android:id="@+id/btnStatistics"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/select_all"
+        android:padding="8dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="7"
+        app:layout_constraintTop_toBottomOf="@id/llWeekDays"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:itemCount="35"
+        tools:listitem="@layout/item_calendar_day"/>
+
+    <!-- 统计图表区域 -->
+    <LinearLayout
+        android:id="@+id/llCharts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/chart_container_background"
         android:layout_margin="16dp"
+        android:padding="16dp"
+        android:elevation="8dp"
         app:layout_constraintTop_toBottomOf="@id/rvCalendar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <!-- 状态列表 -->
-    <TextView
-        android:id="@+id/tvListTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/history_log"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@id/btnStatistics"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <!-- 图表切换按钮组 -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clChartToggle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/status_toggle_background"
+            android:layout_marginBottom="16dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvBodyStates"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/tvListTitle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+            <!-- 滑动背景 -->
+            <View
+                android:id="@+id/vChartToggleBackground"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/status_toggle_selected"
+                android:transitionName="chartToggleBackground"
+                app:layout_constraintWidth_percent="0.333"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <!-- fragment_my_sleep.xml 中添加 -->
-    <TextView
-        android:id="@+id/tvHeatMapTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="梦境热力图"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvListTitle"/>
+            <!-- 饼状图按钮 -->
+            <Button
+                android:id="@+id/btnPieChart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="饼状图"
+                android:textSize="14sp"
+                android:background="@android:color/transparent"
+                android:textColor="@color/status_toggle_text"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
+                app:layout_constraintWidth_percent="0.333"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/Widget.Material3.Button.TextButton"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvHeatMap"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_margin="8dp"
-        android:padding="4dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeatMapTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+            <!-- 条形图按钮 -->
+            <Button
+                android:id="@+id/btnBarChart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="条形图"
+                android:textSize="14sp"
+                android:background="@android:color/transparent"
+                android:textColor="@color/status_toggle_text"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
+                app:layout_constraintWidth_percent="0.333"
+                app:layout_constraintStart_toEndOf="@id/btnPieChart"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/Widget.Material3.Button.TextButton"/>
+
+            <!-- 环形图按钮 -->
+            <Button
+                android:id="@+id/btnDonutChart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="环形图"
+                android:textSize="14sp"
+                android:background="@android:color/transparent"
+                android:textColor="@color/status_toggle_text"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
+                app:layout_constraintWidth_percent="0.333"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/Widget.Material3.Button.TextButton"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- 图表ViewPager -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPagerCharts"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+
+    </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
