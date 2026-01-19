@@ -9,18 +9,20 @@ public class Dream {
     private String nature; // 好梦、噩梦、其他
     private String tags;
     private int isPublic;
+    private int isFavorite;
     private String createdAt;
 
     public Dream() {
     }
 
-    public Dream(int userId, String title, String content, String nature, String tags, int isPublic, String createdAt) {
+    public Dream(int userId, String title, String content, String nature, String tags, int isPublic, int isFavorite, String createdAt) {
         this.userId = userId;
         this.title = title;
         this.content = content;
         this.nature = nature;
         this.tags = tags;
         this.isPublic = isPublic;
+        this.isFavorite = isFavorite;
         this.createdAt = createdAt;
     }
 
@@ -45,6 +47,9 @@ public class Dream {
 
     public int getIsPublic() { return isPublic; }
     public void setIsPublic(int isPublic) { this.isPublic = isPublic; }
+
+    public int getIsFavorite() { return isFavorite; }
+    public void setIsFavorite(int isFavorite) { this.isFavorite = isFavorite; }
 
     public String getCreatedAt() { return createdAt; }
     public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }

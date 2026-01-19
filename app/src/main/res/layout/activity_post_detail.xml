@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -13,8 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/tertiary_60"
-        android:title="详情"
-        android:titleTextColor="@color/tertiary_10"/>
+        app:title="详情"
+        app:titleCentered="false"
+        app:titleTextColor="@color/white"
+        app:navigationIconTint="@color/white"/>
 
     <!-- 表情标题栏 -->
     <LinearLayout

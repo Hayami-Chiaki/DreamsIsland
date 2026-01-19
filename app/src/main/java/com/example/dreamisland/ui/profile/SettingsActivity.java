@@ -7,7 +7,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.dreamisland.R;
 import com.example.dreamisland.databinding.ActivitySettingsBinding;
@@ -40,17 +39,6 @@ public class SettingsActivity extends AppCompatActivity {
         binding.enableNotificationsSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             sharedPreferences.edit().putBoolean("notifications_enabled", isChecked).apply();
             Toast.makeText(this, isChecked ? "通知已启用" : "通知已禁用", Toast.LENGTH_SHORT).show();
-        });
-
-        // 深色模式开关
-        binding.darkModeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            sharedPreferences.edit().putBoolean("dark_mode", isChecked).apply();
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
-            Toast.makeText(this, isChecked ? "深色模式已启用" : "深色模式已禁用", Toast.LENGTH_SHORT).show();
         });
 
         // 清除缓存
@@ -109,10 +97,6 @@ public class SettingsActivity extends AppCompatActivity {
         // 加载通知设置
         boolean notificationsEnabled = sharedPreferences.getBoolean("notifications_enabled", true);
         binding.enableNotificationsSwitch.setChecked(notificationsEnabled);
-
-        // 加载深色模式设置
-        boolean darkMode = sharedPreferences.getBoolean("dark_mode", false);
-        binding.darkModeSwitch.setChecked(darkMode);
     }
 
     @Override

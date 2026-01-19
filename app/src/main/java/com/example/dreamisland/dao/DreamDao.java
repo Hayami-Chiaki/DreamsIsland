@@ -186,6 +186,7 @@ public List<Dream> getDreamsInDateRange(int userId, String startDate, String end
         dream.setNature(cursor.getString(cursor.getColumnIndexOrThrow("nature")));
         dream.setTags(cursor.getString(cursor.getColumnIndexOrThrow("tags")));
         dream.setIsPublic(cursor.getInt(cursor.getColumnIndexOrThrow("is_public")));
+        dream.setIsFavorite(cursor.getInt(cursor.getColumnIndexOrThrow("is_favorite")));
         dream.setCreatedAt(cursor.getString(cursor.getColumnIndexOrThrow("created_at")));
         return dream;
     }

@@ -12,17 +12,17 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:paddingTop="0dp">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topBar"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/tertiary_60"
-            android:title="@string/alarm_title"
-            android:titleTextColor="@color/tertiary_10"
+            app:title="@string/alarm_title"
+            app:titleCentered="false"
+            app:titleTextColor="@color/white"
+            app:navigationIconTint="@color/white"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

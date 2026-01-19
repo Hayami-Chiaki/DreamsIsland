@@ -4,67 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/tertiary_20"
     android:fitsSystemWindows="true">
 
-    <RelativeLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/tertiary_60"
-        android:elevation="8dp">
+        android:layout_height="wrap_content">
 
-        <!-- 返回按钮 -->
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:background="@android:color/transparent"
-            android:src="@android:drawable/ic_menu_revert"
-            android:contentDescription="返回"
-            app:tint="@color/tertiary_10"
-            android:scaleType="centerInside"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/tertiary_60">
 
-        <!-- 标题 -->
-        <TextView
-            android:id="@+id/tvTitleBar"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:text="梦境详情"
-            android:textColor="@color/tertiary_10"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:gravity="center"/>
+            <!-- 返回按钮 -->
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_arrow_back_24"
+                android:contentDescription="返回"
+                app:tint="@color/white"
+                android:scaleType="centerInside"/>
 
-        <!-- 编辑按钮 -->
-        <ImageButton
-            android:id="@+id/btnEdit"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="56dp"
-            android:background="@android:color/transparent"
-            android:src="@android:drawable/ic_menu_edit"
-            android:contentDescription="编辑"
-            app:tint="@color/tertiary_10"
-            android:scaleType="centerInside"/>
+            <!-- 标题 -->
+            <TextView
+                android:id="@+id/tvTitleBar"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@id/btnBack"
+                android:layout_marginStart="8dp"
+                android:text="梦境详情"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center_vertical"/>
 
-        <!-- 删除按钮 -->
-        <ImageButton
-            android:id="@+id/btnDelete"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="16dp"
-            android:background="@android:color/transparent"
-            android:src="@android:drawable/ic_menu_delete"
-            android:contentDescription="删除"
-            app:tint="@color/tertiary_10"
-            android:scaleType="centerInside"/>
-    </RelativeLayout>
+            <!-- 编辑按钮 -->
+            <ImageButton
+                android:id="@+id/btnEdit"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_toStartOf="@id/btnDelete"
+                android:layout_centerVertical="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_edit"
+                android:contentDescription="编辑"
+                app:tint="@color/white"
+                android:scaleType="centerInside"/>
+
+            <!-- 删除按钮 -->
+            <ImageButton
+                android:id="@+id/btnDelete"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_delete"
+                android:contentDescription="删除"
+                app:tint="@color/white"
+                android:scaleType="centerInside"/>
+        </RelativeLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -81,9 +86,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardUseCompatPadding="true"
-                app:cardBackgroundColor="@color/white"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="70dp">
+                app:cardBackgroundColor="@color/tertiary_95"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -173,7 +179,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardUseCompatPadding="true"
-                app:cardBackgroundColor="@color/white">
+                app:cardBackgroundColor="@color/tertiary_95">
 
                 <TextView
                     android:id="@+id/tvContent"
@@ -200,16 +206,6 @@
                     android:background="@android:color/transparent"
                     android:contentDescription="分享"
                     android:src="@android:drawable/ic_menu_share"
-                    app:tint="@color/tertiary_60"
-                    android:layout_marginRight="16dp"/>
-
-                <ImageButton
-                    android:id="@+id/btnLike"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@android:color/transparent"
-                    android:src="@android:drawable/btn_star_big_on"
-                    android:contentDescription="喜欢"
                     app:tint="@color/tertiary_60"/>
             </LinearLayout>
 

@@ -5,14 +5,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/tertiary_20"
     tools:context=".ui.mySleep.MySleepFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tertiary_60"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="我的睡眠"
+            app:titleCentered="false"
+            app:titleTextColor="@color/white"
+            app:navigationIconTint="@color/white" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <!-- 添加可滚动容器 -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         android:fillViewport="true">
 
@@ -20,58 +38,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="32dp">
-    <!-- 记录按钮区域 -->
-    <LinearLayout
-        android:id="@+id/llRecordButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <Button
-            android:id="@+id/btnTired"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            android:text="@string/tired"
-            android:backgroundTint="@color/secondary_color"
-            android:textColor="@android:color/white"
-            android:stateListAnimator="@animator/button_tired_animator"
-            app:cornerRadius="8dp"
-            style="@style/Widget.Material3.Button"/>
-
-        <Button
-            android:id="@+id/btnGeneral"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:layout_marginHorizontal="8dp"
-            android:text="@string/normal"
-            android:backgroundTint="@color/secondary_color"
-            android:textColor="@android:color/white"
-            android:stateListAnimator="@animator/button_general_animator"
-            app:cornerRadius="8dp"
-            style="@style/Widget.Material3.Button"/>
-
-        <Button
-            android:id="@+id/btnEnergetic"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:text="@string/mental"
-            android:backgroundTint="@color/secondary_color"
-            android:textColor="@android:color/white"
-            android:stateListAnimator="@animator/button_energetic_animator"
-            app:cornerRadius="8dp"
-            style="@style/Widget.Material3.Button"/>
-    </LinearLayout>
-
     <!-- 日历导航栏 -->
     <LinearLayout
         android:id="@+id/llCalendarNav"
@@ -80,7 +46,7 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:padding="12dp"
-        app:layout_constraintTop_toBottomOf="@id/llRecordButtons"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -100,6 +66,7 @@
             android:text="2026年1月"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:textColor="@color/white"
             android:paddingVertical="8dp"
             android:layout_marginEnd="16dp"/>
 
@@ -169,6 +136,70 @@
             app:tint="@color/white" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvFeelHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="今天你感觉怎么样？"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/llCalendarNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"/>
+
+    <!-- 记录按钮区域 -->
+    <LinearLayout
+        android:id="@+id/llRecordButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tvFeelHint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/btnTired"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="@string/tired"
+            android:backgroundTint="@color/tertiary_70"
+            android:textColor="@android:color/white"
+            android:stateListAnimator="@animator/button_tired_animator"
+            app:cornerRadius="8dp"
+            style="@style/Widget.Material3.Button"/>
+
+        <Button
+            android:id="@+id/btnGeneral"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="8dp"
+            android:text="@string/normal"
+            android:backgroundTint="@color/tertiary_70"
+            android:textColor="@android:color/white"
+            android:stateListAnimator="@animator/button_general_animator"
+            app:cornerRadius="8dp"
+            style="@style/Widget.Material3.Button"/>
+
+        <Button
+            android:id="@+id/btnEnergetic"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="@string/mental"
+            android:backgroundTint="@color/tertiary_70"
+            android:textColor="@android:color/white"
+            android:stateListAnimator="@animator/button_energetic_animator"
+            app:cornerRadius="8dp"
+            style="@style/Widget.Material3.Button"/>
+    </LinearLayout>
+
     <!-- 星期标题 -->
     <LinearLayout
         android:id="@+id/llWeekDays"
@@ -177,11 +208,18 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:paddingHorizontal="8dp"
-        app:layout_constraintTop_toBottomOf="@id/llCalendarNav"
+        app:layout_constraintTop_toBottomOf="@id/llRecordButtons"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="日"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:textColor="@color/white"/>
 
         <TextView
             android:layout_width="0dp"
@@ -236,15 +274,6 @@
             android:textSize="14sp"
             android:gravity="center"
             android:textColor="@color/white"/>
-
-        <TextView
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_weight="1"
-        android:text="日"
-        android:textSize="14sp"
-        android:gravity="center"
-        android:textColor="@color/white"/>
     </LinearLayout>
 
     <!-- 热力图日历 -->

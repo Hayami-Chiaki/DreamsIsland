@@ -52,7 +52,6 @@
     <string name="settings_title">应用设置</string>
     <string name="notification_settings">通知设置</string>
     <string name="enable_notifications">启用通知</string>
-    <string name="dark_mode">深色模式</string>
     <string name="language">语言</string>
     <string name="about">关于</string>
     <string name="version">版本</string>

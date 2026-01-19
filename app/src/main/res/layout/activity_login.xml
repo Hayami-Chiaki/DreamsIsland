@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/tertiary_20"
     android:fitsSystemWindows="true"
     android:clipToPadding="true"
     android:paddingTop="0dp">
@@ -10,16 +11,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topBar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/tertiary_60"
-        android:title="登录"
-        android:titleTextColor="@color/tertiary_10"/>
+        app:title="登录"
+        app:titleCentered="false"
+        app:titleTextColor="@color/white"
+        app:navigationIconTint="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -74,6 +82,8 @@
             android:text="没有账号？去注册"
             android:textColor="@color/purple_500"
             android:layout_marginTop="12dp" />
+
+    </LinearLayout>
 
     </LinearLayout>
 

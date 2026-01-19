@@ -10,7 +10,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dreamisland.R;
+import com.example.dreamisland.databinding.ActivityDreamDetailBinding;
 import com.example.dreamisland.model.Dream;
+import com.google.android.material.chip.Chip;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -18,33 +20,24 @@ import java.util.List;
 
 public class DreamDetailActivity extends AppCompatActivity {
 
-    private TextView tvTitle;
-    private TextView tvNature;
-    private TextView tvContent;
-    private TextView tvTags;
-    private TextView tvCreatedAt;
-    private Button btnBack;
+    private ActivityDreamDetailBinding binding;
     private boolean readOnly = false;
     private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dream_detail);
+        binding = ActivityDreamDetailBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        setSupportActionBar(binding.topBar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("详情");
+        }
 
         gson = new Gson();
-        initUI();
         getIntentData();
-        setupButtonListeners();
-    }
-
-    private void initUI() {
-        tvTitle = findViewById(R.id.tv_dream_title);
-        tvNature = findViewById(R.id.tv_dream_nature);
-        tvContent = findViewById(R.id.tv_dream_content);
-        tvTags = findViewById(R.id.tv_dream_tags);
-        tvCreatedAt = findViewById(R.id.tv_dream_created_at);
-        btnBack = findViewById(R.id.btn_back);
     }
 
     private void getIntentData() {
@@ -59,39 +52,55 @@ public class DreamDetailActivity extends AppCompatActivity {
             readOnly = intent.getBooleanExtra("readOnly", false);
 
             // 更新UI
-            tvTitle.setText(title);
-            tvNature.setText(nature);
-            tvContent.setText(content);
-            tvCreatedAt.setText(createdAt);
+            binding.title.setText(title != null ? title : "");
+            binding.content.setText(content != null ? content : "");
+            binding.time.setText(createdAt != null ? createdAt : "");
 
-            // 显示标签
-            if (!android.text.TextUtils.isEmpty(tagsJson)) {
-                List<String> tags = gson.fromJson(tagsJson, new TypeToken<List<String>>(){}.getType());
-                if (tags != null && !tags.isEmpty()) {
-                    StringBuilder tagsBuilder = new StringBuilder();
-                    for (int i = 0; i < tags.size(); i++) {
-                        tagsBuilder.append(tags.get(i));
-                        if (i < tags.size() - 1) {
-                            tagsBuilder.append(" ");
-                        }
-                    }
-                    tvTags.setText(tagsBuilder.toString());
-                } else {
-                    tvTags.setText("无标签");
+            // 处理元数据 (仅保留性质)
+            binding.nature.setText("梦境类型：" + (nature != null ? nature : ""));
+            binding.username.setVisibility(View.GONE); // 我的梦境详情页不显示用户名，或者显示“我”
+
+            // 显示带图标的标签
+            displayIconTags(tagsJson);
+        }
+    }
+
+    private void displayIconTags(String tagsJson) {
+        binding.chipGroupTags.removeAllViews();
+        if (android.text.TextUtils.isEmpty(tagsJson)) return;
+
+        try {
+            List<String> tags = gson.fromJson(tagsJson, new TypeToken<List<String>>(){}.getType());
+            if (tags != null && !tags.isEmpty()) {
+                for (String tag : tags) {
+                    Chip chip = new Chip(this);
+                    chip.setText(tag);
+                    chip.setChipBackgroundColorResource(R.color.tertiary_95);
+                    chip.setTextColor(getResources().getColor(R.color.tertiary_70));
+                    chip.setClickable(false);
+                    chip.setCheckable(false);
+                    binding.chipGroupTags.addView(chip);
                 }
-            } else {
-                tvTags.setText("无标签");
+            }
+        } catch (Exception e) {
+            // 如果不是JSON数组，尝试按空格拆分
+            String[] tags = tagsJson.split("\\s+");
+            for (String tag : tags) {
+                if (tag.trim().isEmpty()) continue;
+                Chip chip = new Chip(this);
+                chip.setText(tag);
+                chip.setChipBackgroundColorResource(R.color.tertiary_95);
+                chip.setTextColor(getResources().getColor(R.color.tertiary_70));
+                chip.setClickable(false);
+                chip.setCheckable(false);
+                binding.chipGroupTags.addView(chip);
             }
         }
     }
 
-    private void setupButtonListeners() {
-        btnBack.setOnClickListener(v -> finish());
-    }
-
     @Override
     public boolean onSupportNavigateUp() {
-        finish();
+        onBackPressed();
         return true;
     }
 }

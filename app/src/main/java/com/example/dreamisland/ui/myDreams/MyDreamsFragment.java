@@ -161,8 +161,6 @@ public class MyDreamsFragment extends Fragment implements DreamAdapter.OnDreamCl
                 btnViewMatchDream.setEnabled(true);
                 btnDisconnectMatch.setVisibility(View.VISIBLE);
                 btnDisconnectMatch.setEnabled(true);
-
-                Toast.makeText(context, "匹配成功！点击下方按钮可以查看对方的梦境", Toast.LENGTH_LONG).show();
             } else {
                 // 没有匹配或已断开匹配
                 tvMatchHint.setText("暂无匹配对象");

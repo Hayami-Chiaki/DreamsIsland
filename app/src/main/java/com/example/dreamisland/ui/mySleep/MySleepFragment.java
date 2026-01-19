@@ -49,6 +49,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import android.content.SharedPreferences;
+import android.content.Context;
+
 public class MySleepFragment extends Fragment {
 
     private DreamDatabaseHelper dbHelper;
@@ -73,8 +76,7 @@ public class MySleepFragment extends Fragment {
     private int currentDisplayMonth;
     private boolean isBodyStatus = true;
     
-
-    private static final int CURRENT_USER_ID = 1;
+    private int currentUserId; // 从登录信息获取
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
     private SimpleDateFormat monthFormat = new SimpleDateFormat("yyyy-MM", Locale.getDefault());
     private SimpleDateFormat heatMapDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // 热力图专用
@@ -84,6 +86,10 @@ public class MySleepFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+        // 获取当前登录用户ID
+        SharedPreferences sp = requireActivity().getSharedPreferences("AuthPrefs", Context.MODE_PRIVATE);
+        currentUserId = sp.getInt("logged_in_user_id", 1);
 
         // 初始化数据库
         dbHelper = new DreamDatabaseHelper(getContext());
@@ -132,6 +138,9 @@ public class MySleepFragment extends Fragment {
         btnGeneral.setOnClickListener(v -> recordBodyState("一般"));
         btnEnergetic.setOnClickListener(v -> recordBodyState("精神"));
         
+        // 设置日期点击显示统计
+        tvCurrentDate.setOnClickListener(v -> showStatistics());
+        
         // 月份切换按钮
         btnPrevMonth.setOnClickListener(v -> navigateMonth(-1));
         btnNextMonth.setOnClickListener(v -> navigateMonth(1));
@@ -160,6 +169,26 @@ public class MySleepFragment extends Fragment {
         // 设置图表数据
         setupCharts();
 
+        // 检查做梦频率是否过高并提示
+        checkDreamFrequency();
+    }
+
+    /**
+     * 检查最近一周做梦频率，如果过高则提示用户
+     */
+    private void checkDreamFrequency() {
+        if (dreamDao != null) {
+            new Thread(() -> {
+                int dreamCount = dreamDao.getDreamCountInWeek(currentUserId);
+                if (dreamCount >= 5) {
+                    if (isAdded()) {
+                        requireActivity().runOnUiThread(() -> {
+                            Toast.makeText(getContext(), "您近期梦境频繁（一周内" + dreamCount + "次），建议保持规律作息，注意休息哦。", Toast.LENGTH_LONG).show();
+                        });
+                    }
+                }
+            }).start();
+        }
     }
 
     private Map<String, String> getDreamDataForHeatMap() {
@@ -168,14 +197,14 @@ public class MySleepFragment extends Fragment {
         try {
             if (dreamDao != null) {
                 // 从数据库获取梦境数据
-                dreamData = dreamDao.getDreamsForHeatMap(CURRENT_USER_ID);
+                dreamData = dreamDao.getDreamsForHeatMap(currentUserId);
                 Log.d(TAG, "Loaded " + dreamData.size() + " dream records for heatmap");
 
                 // 如果没有数据，可以添加一些测试数据
                 if (dreamData.isEmpty()) {
                     addTestDreamDataForHeatMap();
                     // 重新获取
-                    dreamData = dreamDao.getDreamsForHeatMap(CURRENT_USER_ID);
+                    dreamData = dreamDao.getDreamsForHeatMap(currentUserId);
                 }
             } else {
                 Log.e(TAG, "dreamDao is null");
@@ -267,7 +296,7 @@ public class MySleepFragment extends Fragment {
             calendar.set(Calendar.MONTH, currentDisplayMonth);
             String currentMonth = monthFormat.format(calendar.getTime());
             
-            List<BodyState> monthlyStates = bodyStateDao.getBodyStatesByMonth(CURRENT_USER_ID, currentMonth);
+            List<BodyState> monthlyStates = bodyStateDao.getBodyStatesByMonth(currentUserId, currentMonth);
             List<Date> monthDates = getMonthDates(currentDisplayYear, currentDisplayMonth);
             calendarAdapter.updateData(monthDates, monthlyStates);
 
@@ -282,7 +311,7 @@ public class MySleepFragment extends Fragment {
             String today = dateFormat.format(new Date());
 
             // 检查今天是否已记录
-            BodyState existingState = bodyStateDao.getBodyStateByDate(CURRENT_USER_ID, today);
+            BodyState existingState = bodyStateDao.getBodyStateByDate(currentUserId, today);
             
             long result;
             if (existingState != null) {
@@ -296,7 +325,7 @@ public class MySleepFragment extends Fragment {
                 }
             } else {
                 // 如果不存在记录，创建新记录
-                BodyState bodyState = new BodyState(CURRENT_USER_ID, state, today);
+                BodyState bodyState = new BodyState(currentUserId, state, today);
                 result = bodyStateDao.insert(bodyState);
                 if (result != -1) {
                     Toast.makeText(getContext(), "记录成功：" + state, Toast.LENGTH_SHORT).show();
@@ -317,7 +346,7 @@ public class MySleepFragment extends Fragment {
     private void showStatistics() {
         try {
             String currentMonth = monthFormat.format(new Date());
-            List<BodyState> monthlyStates = bodyStateDao.getBodyStatesByMonth(CURRENT_USER_ID, currentMonth);
+            List<BodyState> monthlyStates = bodyStateDao.getBodyStatesByMonth(currentUserId, currentMonth);
 
             if (monthlyStates == null || monthlyStates.isEmpty()) {
                 Toast.makeText(getContext(), "本月暂无记录", Toast.LENGTH_SHORT).show();
@@ -344,14 +373,14 @@ public class MySleepFragment extends Fragment {
 
             // 检查健康提示
             String healthTip = "";
-            int consecutiveTired = bodyStateDao.checkConsecutiveTiredDays(CURRENT_USER_ID, 3);
+            int consecutiveTired = bodyStateDao.checkConsecutiveTiredDays(currentUserId, 3);
             if (consecutiveTired >= 3) {
                 healthTip = "您近期醒来后常感疲惫，建议调整入睡环境或咨询医生。";
             }
 
             // 检查一周内梦境次数
             if (dreamDao != null) {
-                int dreamCount = dreamDao.getDreamCountInWeek(CURRENT_USER_ID);
+                int dreamCount = dreamDao.getDreamCountInWeek(currentUserId);
                 if (dreamCount >= 5) {
                     if (!healthTip.isEmpty()) {
                         healthTip += "\n";
@@ -470,11 +499,11 @@ public class MySleepFragment extends Fragment {
             
             if (isBodyStatus) {
                 // 加载身体状态数据
-                List<BodyState> monthlyStates = bodyStateDao.getBodyStatesByMonth(CURRENT_USER_ID, month);
+                List<BodyState> monthlyStates = bodyStateDao.getBodyStatesByMonth(currentUserId, month);
                 calendarAdapter.updateData(monthDates, monthlyStates);
             } else {
                 // 加载梦境状态数据
-                List<Dream> monthlyDreams = dreamDao.getDreamsByMonth(CURRENT_USER_ID, month);
+                List<Dream> monthlyDreams = dreamDao.getDreamsByMonth(currentUserId, month);
                 calendarAdapter.updateDreamData(monthDates, monthlyDreams);
             }
             
@@ -728,7 +757,7 @@ public class MySleepFragment extends Fragment {
             String dateStr = dateFormat.format(date);
             
             // 获取该日期的所有梦境记录
-            List<Dream> dreams = dreamDao.getDreamsByDateRange(CURRENT_USER_ID, dateStr, dateStr);
+            List<Dream> dreams = dreamDao.getDreamsByDateRange(currentUserId, dateStr, dateStr);
             
             if (dreams != null && !dreams.isEmpty()) {
                 // 如果有多个梦境，显示第一个（实际应用中可以显示列表选择）
@@ -736,11 +765,14 @@ public class MySleepFragment extends Fragment {
                 
                 // 打开梦境详情页面
                 Intent intent = new Intent(getActivity(), MyDreamDetailActivity.class);
+                intent.putExtra("dreamId", dream.getDreamId());
+                intent.putExtra("userId", currentUserId);
                 intent.putExtra("title", dream.getTitle());
                 intent.putExtra("content", dream.getContent());
                 intent.putExtra("nature", dream.getNature());
                 intent.putExtra("createdAt", dream.getCreatedAt());
                 intent.putExtra("isPublic", dream.getIsPublic() == 1);
+                intent.putExtra("isFavorite", dream.getIsFavorite() == 1);
                 intent.putExtra("tags", dream.getTags());
                 startActivity(intent);
             } else {

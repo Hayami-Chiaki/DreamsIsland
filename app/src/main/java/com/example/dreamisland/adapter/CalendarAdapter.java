@@ -71,7 +71,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
         if (date == null) {
             // 处理空日期（月份开始前的空白格）
             holder.tvDay.setText("");
-            holder.tvDay.setBackgroundColor(Color.parseColor("#000000")); // 黑色背景
+            holder.tvDay.setBackgroundColor(Color.TRANSPARENT); // 设置为透明，去除黑色方块
 
             holder.tvDay.setTypeface(null, android.graphics.Typeface.NORMAL);
             return;
@@ -99,13 +99,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                     // 身体状态颜色
                     switch (status) {
                         case "疲惫":
-                            holder.tvDay.setBackgroundColor(Color.parseColor("#FF6B6B")); // 红色
+                            holder.tvDay.setBackgroundResource(R.drawable.calendar_day_tired_bg); // 红色圆角
                             break;
                         case "精神":
-                            holder.tvDay.setBackgroundColor(Color.parseColor("#51CF66")); // 绿色
+                            holder.tvDay.setBackgroundResource(R.drawable.calendar_day_energetic_bg); // 绿色圆角
                             break;
                         case "一般":
-                            holder.tvDay.setBackgroundColor(Color.parseColor("#FFD93D")); // 黄色
+                            holder.tvDay.setBackgroundResource(R.drawable.calendar_day_general_bg); // 黄色圆角
                             break;
                         default:
                             holder.tvDay.setBackgroundResource(R.drawable.calendar_day_background); // 默认黑色框框
@@ -115,13 +115,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                     // 梦境状态颜色
                     switch (status) {
                         case "好梦":
-                            holder.tvDay.setBackgroundColor(Color.parseColor("#90EE90")); // 浅绿
+                            holder.tvDay.setBackgroundResource(R.drawable.calendar_day_good_dream_bg); // 浅绿圆角
                             break;
                         case "噩梦":
-                            holder.tvDay.setBackgroundColor(Color.parseColor("#FF6961")); // 浅红
+                            holder.tvDay.setBackgroundResource(R.drawable.calendar_day_bad_dream_bg); // 浅红圆角
                             break;
                         case "其他":
-                            holder.tvDay.setBackgroundColor(Color.parseColor("#FDFD96")); // 浅黄色
+                            holder.tvDay.setBackgroundResource(R.drawable.calendar_day_other_dream_bg); // 浅黄色圆角
                             break;
                         default:
                             holder.tvDay.setBackgroundResource(R.drawable.calendar_day_background); // 默认黑色框框
@@ -147,10 +147,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
 
             if (calendar.equals(today)) {
                 holder.tvDay.setTypeface(null, android.graphics.Typeface.BOLD);
-                holder.tvDay.setTextColor(Color.parseColor("#BB86FC")); // 淡紫色突出显示
+                if (status != null) {
+                    holder.tvDay.setTextColor(Color.parseColor("#FFFFFF")); // 有记录时显示白色
+                } else {
+                    holder.tvDay.setTextColor(Color.parseColor("#BB86FC")); // 无记录且是今天时显示淡紫色
+                }
             } else {
                 holder.tvDay.setTypeface(null, android.graphics.Typeface.NORMAL);
-                holder.tvDay.setTextColor(Color.parseColor("#FFFFFF")); // 白色
+                holder.tvDay.setTextColor(Color.parseColor("#FFFFFF")); // 其他日期显示白色
             }
 
             // 保存原始背景颜色或状态
@@ -176,43 +180,43 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                             })
                             .start();
 
-                    // 临时改变背景颜色为灰色
-                    holder.tvDay.setBackgroundColor(Color.parseColor("#6C757D")); // 灰色
+                    // 临时改变背景颜色为灰色圆角
+                    holder.tvDay.setBackgroundResource(R.drawable.calendar_day_selected_bg);
 
                     // 恢复原背景
                     new android.os.Handler().postDelayed(() -> {
                         if (hasOriginalColor && originalStatus != null) {
-                            // 如果有原始状态，重新应用状态对应的颜色
+                            // 如果有原始状态，重新应用状态对应的背景
                             if (isBodyStatus) {
                                 // 身体状态颜色
                                 switch (originalStatus) {
                                     case "疲惫":
-                                        holder.tvDay.setBackgroundColor(Color.parseColor("#FF6B6B")); // 红色
+                                        holder.tvDay.setBackgroundResource(R.drawable.calendar_day_tired_bg);
                                         break;
                                     case "精神":
-                                        holder.tvDay.setBackgroundColor(Color.parseColor("#51CF66")); // 绿色
+                                        holder.tvDay.setBackgroundResource(R.drawable.calendar_day_energetic_bg);
                                         break;
                                     case "一般":
-                                        holder.tvDay.setBackgroundColor(Color.parseColor("#FFD93D")); // 黄色
+                                        holder.tvDay.setBackgroundResource(R.drawable.calendar_day_general_bg);
                                         break;
                                     default:
-                                        holder.tvDay.setBackgroundResource(R.drawable.calendar_day_background); // 默认黑色框框
+                                        holder.tvDay.setBackgroundResource(R.drawable.calendar_day_background);
                                         break;
                                 }
                             } else {
                                 // 梦境状态颜色
                                 switch (originalStatus) {
                                     case "好梦":
-                                        holder.tvDay.setBackgroundColor(Color.parseColor("#90EE90")); // 浅绿
+                                        holder.tvDay.setBackgroundResource(R.drawable.calendar_day_good_dream_bg);
                                         break;
                                     case "噩梦":
-                                        holder.tvDay.setBackgroundColor(Color.parseColor("#FF6961")); // 浅红
+                                        holder.tvDay.setBackgroundResource(R.drawable.calendar_day_bad_dream_bg);
                                         break;
                                     case "其他":
-                                        holder.tvDay.setBackgroundColor(Color.parseColor("#FDFD96")); // 浅黄色
+                                        holder.tvDay.setBackgroundResource(R.drawable.calendar_day_other_dream_bg);
                                         break;
                                     default:
-                                        holder.tvDay.setBackgroundResource(R.drawable.calendar_day_background); // 默认黑色框框
+                                        holder.tvDay.setBackgroundResource(R.drawable.calendar_day_background);
                                         break;
                                 }
                             }
@@ -230,7 +234,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
         } catch (Exception e) {
             // 如果出现异常，显示空白
             holder.tvDay.setText("");
-            holder.tvDay.setBackgroundColor(Color.parseColor("#E9ECEF"));
+            holder.tvDay.setBackgroundResource(R.drawable.calendar_day_background);
 
         }
     }

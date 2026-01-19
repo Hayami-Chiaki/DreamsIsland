@@ -20,7 +20,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/tertiary_60"
             app:title="广场"
-            app:titleTextColor="@color/tertiary_10" />
+            app:titleCentered="false"
+            app:titleTextColor="@color/white" />
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
@@ -28,8 +29,8 @@
             android:background="@color/tertiary_60"
             android:contentDescription="@string/tab_navigation"
             app:tabIndicatorFullWidth="false"
-            app:tabTextColor="@color/tertiary_20"
-            app:tabSelectedTextColor="@color/tertiary_10"
+            app:tabTextColor="@color/white"
+            app:tabSelectedTextColor="@color/white"
             app:tabIndicatorColor="@color/purple_500" />
     </com.google.android.material.appbar.AppBarLayout>
 

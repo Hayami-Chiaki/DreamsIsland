@@ -98,13 +98,16 @@ public class MyDreamsViewModel extends AndroidViewModel {
     // 加载用户的梦境列表（默认加载ID为1的用户）
     public void loadUserDreams(int userId) {
         isLoading.postValue(true);
+        // 加载梦境的同时检查是否有现有的匹配
+        checkExistingMatch(userId);
+        
         new Thread(() -> {
             SQLiteDatabase db = null;
             Cursor cursor = null;
             try {
                 db = databaseHelper.getReadableDatabase();
-                String query = "SELECT dream_id, user_id, title, content, nature, tags, is_public, is_favorite, created_at " +
-                        "FROM dreams WHERE user_id = ? ORDER BY is_favorite DESC, created_at DESC";
+                String query = "SELECT dream_id, user_id, title, content, nature, tags, is_public, created_at " +
+                        "FROM dreams WHERE user_id = ? ORDER BY created_at DESC";
 
                 cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
 
@@ -119,7 +122,7 @@ public class MyDreamsViewModel extends AndroidViewModel {
                                 cursor.getString(cursor.getColumnIndexOrThrow("nature")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("tags")),
                                 cursor.getInt(cursor.getColumnIndexOrThrow("is_public")) == 1,
-                                cursor.getInt(cursor.getColumnIndexOrThrow("is_favorite")) == 1,
+                                false, // isFavorite set to false
                                 cursor.getString(cursor.getColumnIndexOrThrow("created_at"))
                         );
                         dreams.add(dream);
@@ -144,8 +147,8 @@ public class MyDreamsViewModel extends AndroidViewModel {
             SQLiteDatabase db = null;
             try {
                 db = databaseHelper.getWritableDatabase();
-                String query = "INSERT INTO dreams (user_id, title, content, nature, tags, is_public, is_favorite, created_at) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                String query = "INSERT INTO dreams (user_id, title, content, nature, tags, is_public, created_at) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
                 db.execSQL(query, new Object[]{
                         dream.getUserId(),
                         dream.getTitle(),
@@ -153,7 +156,6 @@ public class MyDreamsViewModel extends AndroidViewModel {
                         dream.getNature(),
                         dream.getTags(),
                         dream.isPublic() ? 1 : 0,
-                        dream.isFavorite() ? 1 : 0,
                         dream.getCreatedAt()
                 });
                 // 重新加载列表
@@ -189,27 +191,6 @@ public class MyDreamsViewModel extends AndroidViewModel {
         }).start();
     }
 
-    // 切换收藏状态
-    public void toggleFavorite(int dreamId, int userId, boolean currentFavorite) {
-        isLoading.setValue(true);
-        new Thread(() -> {
-            SQLiteDatabase db = null;
-            try {
-                db = databaseHelper.getWritableDatabase();
-                String query = "UPDATE dreams SET is_favorite = ? WHERE dream_id = ?";
-                db.execSQL(query, new Object[]{currentFavorite ? 0 : 1, dreamId});
-                // 重新加载列表
-                loadUserDreams(userId);
-            } catch (Exception e) {
-                Log.e("MyDreamsViewModel", "切换收藏状态失败", e);
-                errorMessage.postValue("切换收藏状态失败：" + e.getMessage());
-            } finally {
-                if (db != null) db.close();
-                isLoading.postValue(false);
-            }
-        }).start();
-    }
-
     // 更新梦境
     public void updateDream(Dream dream) {
         isLoading.setValue(true);
@@ -217,14 +198,13 @@ public class MyDreamsViewModel extends AndroidViewModel {
             SQLiteDatabase db = null;
             try {
                 db = databaseHelper.getWritableDatabase();
-                String query = "UPDATE dreams SET title = ?, content = ?, nature = ?, tags = ?, is_public = ?, is_favorite = ? WHERE dream_id = ?";
+                String query = "UPDATE dreams SET title = ?, content = ?, nature = ?, tags = ?, is_public = ? WHERE dream_id = ?";
                 db.execSQL(query, new Object[]{
                         dream.getTitle(),
                         dream.getContent(),
                         dream.getNature(),
                         dream.getTags(),
                         dream.isPublic() ? 1 : 0,
-                        dream.isFavorite() ? 1 : 0,
                         dream.getDreamId()
                 });
                 // 重新加载列表
@@ -401,6 +381,52 @@ public class MyDreamsViewModel extends AndroidViewModel {
             if (cursor != null) cursor.close();
         }
         return dreams;
+    }
+
+    /**
+     * 检查是否存在进行中的匹配
+     */
+    public void checkExistingMatch(int userId) {
+        new Thread(() -> {
+            SQLiteDatabase db = null;
+            Cursor cursor = null;
+            try {
+                db = databaseHelper.getReadableDatabase();
+                // 查找当前用户作为 user1 或 user2 且没有结束时间的匹配记录
+                String query = "SELECT m.match_id, m.user1_id, m.user2_id, u.username " +
+                        "FROM matches m " +
+                        "JOIN users u ON (m.user1_id = u.user_id OR m.user2_id = u.user_id) " +
+                        "WHERE (m.user1_id = ? OR m.user2_id = ?) " +
+                        "AND u.user_id != ? " +
+                        "AND m.end_time IS NULL " +
+                        "ORDER BY m.match_id DESC LIMIT 1";
+
+                cursor = db.rawQuery(query, new String[]{String.valueOf(userId), String.valueOf(userId), String.valueOf(userId)});
+
+                if (cursor != null && cursor.moveToFirst()) {
+                    int matchId = cursor.getInt(cursor.getColumnIndexOrThrow("match_id"));
+                    int user1Id = cursor.getInt(cursor.getColumnIndexOrThrow("user1_id"));
+                    int user2Id = cursor.getInt(cursor.getColumnIndexOrThrow("user2_id"));
+                    String matchedUsername = cursor.getString(cursor.getColumnIndexOrThrow("username"));
+                    
+                    int matchedUserId = (user1Id == userId) ? user2Id : user1Id;
+                    
+                    // 获取匹配用户的梦境列表
+                    List<Dream> matchedUserDreams = getDreamsByUserId(matchedUserId, db);
+                    
+                    // 创建并发布匹配信息
+                    MatchInfo matchInfo = new MatchInfo(matchId, matchedUserId, matchedUsername, matchedUserDreams);
+                    currentMatch.postValue(matchInfo);
+                } else {
+                    currentMatch.postValue(null);
+                }
+            } catch (Exception e) {
+                Log.e("MyDreamsViewModel", "检查现有匹配失败", e);
+            } finally {
+                if (cursor != null) cursor.close();
+                if (db != null) db.close();
+            }
+        }).start();
     }
 
     @Override

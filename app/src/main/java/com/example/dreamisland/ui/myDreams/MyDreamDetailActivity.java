@@ -34,7 +34,6 @@ public class MyDreamDetailActivity extends AppCompatActivity {
     private String nature;
     private String createdAt;
     private boolean isPublic;
-    private boolean isFavorite;
     private List<String> tagsList = new ArrayList<>();
     private int userId = 1; // 默认用户ID
 
@@ -70,7 +69,6 @@ public class MyDreamDetailActivity extends AppCompatActivity {
         nature = getIntent().getStringExtra("nature");
         createdAt = getIntent().getStringExtra("createdAt");
         isPublic = getIntent().getBooleanExtra("isPublic", false);
-        isFavorite = getIntent().getBooleanExtra("isFavorite", false);
 
         // 解析标签
         String tagsJson = getIntent().getStringExtra("tags");
@@ -109,6 +107,8 @@ public class MyDreamDetailActivity extends AppCompatActivity {
             for (String tag : tagsList) {
                 Chip chip = new Chip(this);
                 chip.setText(tag);
+                chip.setChipBackgroundColorResource(R.color.tertiary_95);
+                chip.setTextColor(getResources().getColor(R.color.tertiary_70));
                 chip.setClickable(false);
                 chip.setCheckable(false);
                 chipGroup.addView(chip);
@@ -160,17 +160,6 @@ public class MyDreamDetailActivity extends AppCompatActivity {
                 shareDream();
             }
         });
-
-        // 收藏按钮 - 设置初始状态
-        binding.btnLike.setSelected(isFavorite);
-
-        binding.btnLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "收藏按钮被点击");
-                toggleFavorite();
-            }
-        });
     }
 
     /**
@@ -184,18 +173,6 @@ public class MyDreamDetailActivity extends AppCompatActivity {
         startActivity(Intent.createChooser(intent, "选择分享方式"));
     }
 
-    /**
-     * 切换收藏状态
-     */
-    private void toggleFavorite() {
-        boolean currentFavorite = binding.btnLike.isSelected();
-        binding.btnLike.setSelected(!currentFavorite);
-        String message = currentFavorite ? "取消收藏成功" : "收藏成功";
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-
-        // 调用ViewModel切换收藏状态
-        myDreamsViewModel.toggleFavorite(dreamId, userId, currentFavorite);
-    }
 
     /**
      * 显示编辑梦境对话框

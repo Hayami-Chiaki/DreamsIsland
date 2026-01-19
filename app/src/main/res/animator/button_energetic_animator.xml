@@ -14,7 +14,7 @@
                 android:interpolator="@android:interpolator/fast_out_slow_in"/>
             <objectAnimator
                 android:propertyName="backgroundTint"
-                android:valueFrom="@color/secondary_color"
+                android:valueFrom="@color/tertiary_70"
                 android:valueTo="@color/color_energetic"
                 android:duration="150"
                 android:interpolator="@android:interpolator/fast_out_slow_in"/>
@@ -35,7 +35,7 @@
             <objectAnimator
                 android:propertyName="backgroundTint"
                 android:valueFrom="@color/color_energetic"
-                android:valueTo="@color/secondary_color"
+                android:valueTo="@color/tertiary_70"
                 android:duration="150"
                 android:interpolator="@android:interpolator/fast_out_slow_in"/>
         </set>

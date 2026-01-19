@@ -9,7 +9,7 @@
         android:id="@+id/navigation_my_dreams"
         android:name="com.example.dreamisland.ui.myDreams.MyDreamsFragment"
         android:label="@string/title_my_dreams"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_my_dreams" />
 
     <fragment
         android:id="@+id/navigation_my_sleep"
@@ -21,11 +21,11 @@
         android:id="@+id/navigation_square"
         android:name="com.example.dreamisland.ui.square.SquareFragment"
         android:label="@string/title_square"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_square" />
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.dreamisland.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_profile" />
 </navigation>

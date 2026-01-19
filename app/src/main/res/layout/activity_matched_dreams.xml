@@ -1,38 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/black"
+    android:background="@color/tertiary_20"
+    android:fitsSystemWindows="true"
     tools:context=".ui.myDreams.MatchedDreamsActivity">
 
-    <!-- 标题栏 -->
-    <RelativeLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:background="@color/primary_color">
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:layout_centerInParent="true"
-            android:text="匹配用户的梦境" />
-
-        <Button
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="返回"
-            android:textColor="@android:color/white"
-            android:background="@color/secondary_color"
-            android:layout_alignParentLeft="true" />
-    </RelativeLayout>
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/tertiary_60"
+        app:title="匹配用户的梦境"
+        app:titleCentered="false"
+        app:titleTextColor="@color/white"
+        app:navigationIcon="@drawable/ic_arrow_back_24"
+        app:navigationIconTint="@color/white"/>
 
     <!-- 梦境列表 -->
     <androidx.recyclerview.widget.RecyclerView
@@ -40,7 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" 
-        android:padding="16dp"/>
+        android:padding="8dp"
+        android:clipToPadding="false"/>
 
     <!-- 空状态 -->
     <LinearLayout

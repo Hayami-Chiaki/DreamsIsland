@@ -114,14 +114,28 @@ public class StatisticsDialog extends DialogFragment {
                 tvHealthTip.setVisibility(View.GONE);
             }
 
+            // 设置按钮点击事件
+            View btnConfirm = view.findViewById(R.id.btnConfirm);
+            if (btnConfirm != null) {
+                btnConfirm.setOnClickListener(v -> dismiss());
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        builder.setView(view)
-                .setTitle("本月身体状态统计")
-                .setPositiveButton("确定", (dialog, which) -> dialog.dismiss());
+        builder.setView(view);
 
         return builder.create();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null && dialog.getWindow() != null) {
+            // 设置对话框背景透明，以便显示布局文件中的圆角背景
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
     }
 }

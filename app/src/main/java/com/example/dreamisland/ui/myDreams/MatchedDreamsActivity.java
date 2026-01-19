@@ -6,9 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,13 +17,14 @@ import com.example.dreamisland.adapter.DreamAdapter;
 import com.example.dreamisland.database.DreamDatabaseHelper;
 import com.example.dreamisland.model.Dream;
 
+import com.google.android.material.appbar.MaterialToolbar;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MatchedDreamsActivity extends AppCompatActivity implements DreamAdapter.OnDreamClickListener {
 
-    private TextView tvTitle;
-    private Button btnBack;
+    private MaterialToolbar topBar;
     private RecyclerView rvMatchedDreams;
     private LinearLayout layoutEmpty;
     private DreamAdapter dreamAdapter;
@@ -48,8 +47,7 @@ public class MatchedDreamsActivity extends AppCompatActivity implements DreamAda
     }
 
     private void initUI() {
-        tvTitle = findViewById(R.id.tv_title);
-        btnBack = findViewById(R.id.btn_back);
+        topBar = findViewById(R.id.topBar);
         rvMatchedDreams = findViewById(R.id.rv_matched_dreams);
         layoutEmpty = findViewById(R.id.layout_empty);
     }
@@ -158,17 +156,17 @@ public class MatchedDreamsActivity extends AppCompatActivity implements DreamAda
         if (matchedDreams == null) {
             matchedDreams = new ArrayList<>();
         }
-
+    
         // 更新标题
         if (!android.text.TextUtils.isEmpty(matchedUsername)) {
-            tvTitle.setText(matchedUsername + "的梦境");
+            topBar.setTitle(matchedUsername + "的梦境");
         }
-
+    
         // 更新梦境列表
         dreamAdapter.setDreamList(matchedDreams);
         updateEmptyState();
     }
-
+    
     private void updateEmptyState() {
         if (matchedDreams.isEmpty()) {
             rvMatchedDreams.setVisibility(View.GONE);
@@ -178,9 +176,9 @@ public class MatchedDreamsActivity extends AppCompatActivity implements DreamAda
             layoutEmpty.setVisibility(View.GONE);
         }
     }
-
+    
     private void setupButtonListeners() {
-        btnBack.setOnClickListener(v -> finish());
+        topBar.setNavigationOnClickListener(v -> finish());
     }
 
     @Override
@@ -195,6 +193,7 @@ public class MatchedDreamsActivity extends AppCompatActivity implements DreamAda
         intent.putExtra("isPublic", dream.isPublic());
         intent.putExtra("isFavorite", dream.isFavorite());
         intent.putExtra("tags", dream.getTags());
+        intent.putExtra("username", matchedUsername); // 传递匹配到的用户名
         intent.putExtra("readOnly", true); // 设置为只读模式
         startActivity(intent);
     }

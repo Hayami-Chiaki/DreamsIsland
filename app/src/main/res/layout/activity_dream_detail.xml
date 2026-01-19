@@ -1,81 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:paddingTop="0dp"
+    android:background="@color/tertiary_20"
     android:fitsSystemWindows="true"
+    tools:context=".ui.square.plaza.detail.DreamDetailActivity">
 
-    android:clipToPadding="true"
-    android:background="@color/tertiary_20">
-
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/tertiary_60"
-            android:title="详情"
-            android:titleTextColor="@android:color/white"/>
+            app:title="详情"
+            app:titleCentered="false"
+            app:titleTextColor="@color/white"
+            app:navigationIcon="@drawable/ic_arrow_back_24"
+            app:navigationIconTint="@color/white"/>
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- 帖子标题区域 -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/post_border"
-            android:padding="16dp"
-            android:layout_marginTop="16dp">
+            android:padding="16dp">
 
-            <TextView
-                android:id="@+id/title"
+            <!-- 梦境标题区域 -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="32sp"
-                android:textColor="@color/tertiary_70"
-                android:layout_marginBottom="8dp"/>
+                app:cardUseCompatPadding="true"
+                app:cardBackgroundColor="@color/tertiary_95"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                android:layout_marginBottom="12dp">
 
-            <!-- 元数据行 -->
-            <TextView
-                android:id="@+id/meta"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/tertiary_70"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/light_gray"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:id="@+id/nature"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="@color/light_gray"
+                        android:layout_marginBottom="4dp"/>
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupTags"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        app:chipSpacingHorizontal="8dp"
+                        app:singleLine="true"/>
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/light_gray"
+                        android:gravity="end"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- 梦境内容区域 -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:textColor="@color/light_gray"
-                android:layout_marginBottom="4dp"/>
+                app:cardUseCompatPadding="true"
+                app:cardBackgroundColor="@color/tertiary_95"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
 
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="@color/light_gray"/>
+                <TextView
+                    android:id="@+id/content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/tertiary_70"
+                    android:lineSpacingExtra="8sp"/>
+            </com.google.android.material.card.MaterialCardView>
+
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <!-- 帖子内容区域 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/post_border"
-            android:padding="16dp"
-            android:layout_marginTop="16dp">
-
-            <TextView
-                android:id="@+id/content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="@color/tertiary_70"
-                android:lineSpacingExtra="8sp"/>
-        </LinearLayout>
-    </LinearLayout>
-
-</ScrollView>
-
-
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
