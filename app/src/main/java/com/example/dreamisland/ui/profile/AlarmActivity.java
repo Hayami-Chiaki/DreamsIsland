@@ -162,41 +162,80 @@ public class AlarmActivity extends AppCompatActivity {
         // 先取消本类型的所有预约
         cancelAlarm();
 
+        boolean hasAnyRepeat = false;
         for (int day = java.util.Calendar.SUNDAY; day <= java.util.Calendar.SATURDAY; day++) {
             boolean checked = sharedPreferences.getBoolean(currentType + "_repeat_" + day, false);
-            if (!checked) continue;
-            Intent i = new Intent(this, AlarmReceiver.class);
-            i.putExtra("alarm_type", currentType);
-            i.putExtra("weekday", day);
-            int requestCode = ("sleep".equals(currentType) ? 1000 : 2000) + day;
-            PendingIntent pi = PendingIntent.getBroadcast(this, requestCode, i,
-                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            if (checked) {
+                hasAnyRepeat = true;
+                scheduleAlarmForDay(day, hour, minute);
+            }
+        }
 
-            java.util.Calendar calendar = java.util.Calendar.getInstance();
-            calendar.set(java.util.Calendar.HOUR_OF_DAY, hour);
-            calendar.set(java.util.Calendar.MINUTE, minute);
-            calendar.set(java.util.Calendar.SECOND, 0);
+        // 如果没有选择重复日期，则设置为单次闹钟（今天或明天）
+        if (!hasAnyRepeat) {
+            scheduleAlarmForDay(-1, hour, minute);
+        }
+    }
 
+    private void scheduleAlarmForDay(int dayOfWeek, int hour, int minute) {
+        Intent i = new Intent(this, AlarmReceiver.class);
+        i.putExtra("alarm_type", currentType);
+        i.putExtra("weekday", dayOfWeek);
+        
+        // requestCode: 单次闹钟用 -1，重复闹钟用星期几
+        int requestCode = ("sleep".equals(currentType) ? 1000 : 2000) + (dayOfWeek == -1 ? 0 : dayOfWeek);
+        PendingIntent pi = PendingIntent.getBroadcast(this, requestCode, i,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.set(java.util.Calendar.HOUR_OF_DAY, hour);
+        calendar.set(java.util.Calendar.MINUTE, minute);
+        calendar.set(java.util.Calendar.SECOND, 0);
+        calendar.set(java.util.Calendar.MILLISECOND, 0);
+
+        if (dayOfWeek == -1) {
+            // 单次闹钟逻辑
+            if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
+                calendar.add(java.util.Calendar.DAY_OF_YEAR, 1);
+            }
+        } else {
+            // 重复闹钟逻辑
             int currentDow = calendar.get(java.util.Calendar.DAY_OF_WEEK);
-            int delta = (day - currentDow + 7) % 7;
+            int delta = (dayOfWeek - currentDow + 7) % 7;
             if (delta == 0 && calendar.getTimeInMillis() <= System.currentTimeMillis()) {
                 delta = 7;
             }
             calendar.add(java.util.Calendar.DAY_OF_YEAR, delta);
+        }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            if (alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+            } else {
+                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+            }
+        } else {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
         }
     }
 
     private void cancelAlarm() {
+        // 取消重复闹钟
         for (int day = java.util.Calendar.SUNDAY; day <= java.util.Calendar.SATURDAY; day++) {
-            Intent i = new Intent(this, AlarmReceiver.class);
-            i.putExtra("alarm_type", currentType);
-            i.putExtra("weekday", day);
-            int requestCode = ("sleep".equals(currentType) ? 1000 : 2000) + day;
-            PendingIntent pi = PendingIntent.getBroadcast(this, requestCode, i,
-                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-            alarmManager.cancel(pi);
+            cancelSingleAlarm(day);
         }
+        // 取消单次闹钟
+        cancelSingleAlarm(-1);
+    }
+
+    private void cancelSingleAlarm(int dayOfWeek) {
+        Intent i = new Intent(this, AlarmReceiver.class);
+        i.putExtra("alarm_type", currentType);
+        i.putExtra("weekday", dayOfWeek);
+        int requestCode = ("sleep".equals(currentType) ? 1000 : 2000) + (dayOfWeek == -1 ? 0 : dayOfWeek);
+        PendingIntent pi = PendingIntent.getBroadcast(this, requestCode, i,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        alarmManager.cancel(pi);
     }
 
     @Override

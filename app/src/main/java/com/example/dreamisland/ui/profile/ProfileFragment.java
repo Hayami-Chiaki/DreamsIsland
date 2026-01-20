@@ -97,12 +97,29 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateAlarmStatus() {
-        boolean alarmEnabled = alarmPrefs.getBoolean("alarm_enabled", false);
-        if (alarmEnabled) {
-            int hour = alarmPrefs.getInt("alarm_hour", 7);
-            int minute = alarmPrefs.getInt("alarm_minute", 0);
-            String timeText = String.format("%02d:%02d", hour, minute);
-            binding.alarmStatusTextView.setText(timeText);
+        boolean wakeEnabled = alarmPrefs.getBoolean("wake_enabled", false);
+        boolean sleepEnabled = alarmPrefs.getBoolean("sleep_enabled", false);
+        StringBuilder statusBuilder = new StringBuilder();
+
+        if (wakeEnabled) {
+            int hour = alarmPrefs.getInt("wake_hour", 7);
+            int minute = alarmPrefs.getInt("wake_minute", 0);
+            String label = getString(R.string.alarm_wake);
+            statusBuilder.append(label).append(" ").append(String.format("%02d:%02d", hour, minute));
+        }
+
+        if (sleepEnabled) {
+            if (statusBuilder.length() > 0) {
+                statusBuilder.append(" | ");
+            }
+            int hour = alarmPrefs.getInt("sleep_hour", 22);
+            int minute = alarmPrefs.getInt("sleep_minute", 0);
+            String label = getString(R.string.alarm_sleep);
+            statusBuilder.append(label).append(" ").append(String.format("%02d:%02d", hour, minute));
+        }
+
+        if (statusBuilder.length() > 0) {
+            binding.alarmStatusTextView.setText(statusBuilder.toString());
         } else {
             binding.alarmStatusTextView.setText(getString(R.string.alarm_not_set));
         }

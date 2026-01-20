@@ -39,6 +39,8 @@
     <string name="alarm_repeat">重复</string>
     <string name="alarm_ringtone">铃声</string>
     <string name="alarm_volume">音量</string>
+    <string name="alarm_sleep">入睡提醒</string>
+    <string name="alarm_wake">起床提醒</string>
     <string name="monday">周一</string>
     <string name="tuesday">周二</string>
     <string name="wednesday">周三</string>

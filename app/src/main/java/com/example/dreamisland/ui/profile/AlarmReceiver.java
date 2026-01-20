@@ -14,17 +14,15 @@ import java.util.Calendar;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        if (alarmUri == null) {
-            alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        }
-        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
-        if (ringtone != null) {
-            ringtone.play();
-        }
+        String type = intent.getStringExtra("alarm_type");
+        
+        // 启动闹钟提醒 Activity
+        Intent alertIntent = new Intent(context, AlarmAlertActivity.class);
+        alertIntent.putExtra("alarm_type", type);
+        alertIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(alertIntent);
 
         // 为同一类型与星期，顺延一周再次设置
-        String type = intent.getStringExtra("alarm_type");
         int weekday = intent.getIntExtra("weekday", -1);
         if (type != null && weekday != -1) {
             PendingIntent pi = PendingIntent.getBroadcast(
